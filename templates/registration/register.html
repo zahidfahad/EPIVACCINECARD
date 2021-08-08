@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>EPIVACCINECARD</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Icons font CSS-->
+    <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="{% static 'vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <div class="container">
+        <div class="w-100">
+            <div class="card card-5">
+                <div class="card-heading" style="border-radius: 0px; background-color: teal;">
+                    <h2 class="title">EPIVACCINECARD Registration</h2>
+                </div>
+                <div class="card-body">
+                    {{ form.errors }}
+                    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="first_name">First Name</label> {{ form.first_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="last_name">Last Name</label> {{ form.last_name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="username">Mobile</label> {{ form.username }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="email">Email</label> {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="fatherName">Father's Name</label> {{ form.fatherName }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="motherName">Mother's Name</label> {{ form.motherName }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="password1">Password</label>
+                                <input class="form-control" required type="password" name="password1" id="password1">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="password2">Confirm Password</label>
+                                <input class="form-control" required type="password" name="password2" id="password2">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="input-group-desc">
+                                    <label for="birthcertificateNo">Birthcertificate No</label> {{ form.birthcertificateNo }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="gender">Gender</label> {{ form.gender }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="divisions">Division</label> {{ form.divisions }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="zilla">Zilla</label> {{ form.zilla }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="village">Village</label> {{ form.village }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="union">Union</label> {{ form.union }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="word_no">Word No</label> {{ form.word_no }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="holdingNo">Holding No</label> {{ form.holdingNo }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="sub_block">Sub Block</label> {{ form.sub_block }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="get_vaccine_from">Vaccination Place Name</label> {{ form.get_vaccine_from }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="input-group-desc">
+                                    <label for="profile_pic">Your Image(Optional)</label> {{ form.profile_pic }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="is_ha">Health Assistant</label> <br>
+                                <input class="form-check-input" type="radio" name="is_ha" id="is_ha" style="transform: translateX(-40%);">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="is_baby">Baby</label> <br>
+                                <input class="form-check-input" type="radio" name="is_baby" id="is_baby" style="transform: translateX(-47%);">
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn btn--radius-2 btn--red" type="submit">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Jquery JS-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <!-- Vendor JS-->
+    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
+
+    <!-- Main JS-->
+    <script src="{% static 'js/global.js' %}"></script>
+
+    <script>
+        var is_baby = document.getElementById('is_baby');
+        var is_ha = document.getElementById('is_ha');
+
+        is_ha.addEventListener('click', (event) => {
+            if (is_baby.checked === true) {
+                is_baby.checked = false;
+            }
+        })
+
+        is_baby.addEventListener('click', (event) => {
+            if (is_ha.checked === true) {
+                is_ha.checked = false;
+            }
+        })
+    </script>
+
+</body>
+
+</html>
+<!-- end document-->
