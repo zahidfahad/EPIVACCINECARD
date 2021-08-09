@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.deletion import SET_NULL
 from django.db.models.fields import CharField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 class User(AbstractUser):
@@ -99,3 +102,31 @@ class User(AbstractUser):
             return url
 
 
+class BabyAttachedToHealthAssistant(models.Model):
+    ha = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True,related_name='ha_iser')
+    baby = models.OneToOneField(User,on_delete=models.CASCADE,blank=True, null=True,related_name='baby_user')
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.baby.first_name
+
+
+class ReportIssue(models.Model):
+    name = models.CharField(max_length=30,blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    mobile = models.CharField(max_length=30,blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
+    sent = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True,related_name='msg_from_user')
+    receiver = models.ForeignKey(User,on_delete=models.CASCADE,blank=True, null=True,related_name='msg_to_user')
+    msg = models.TextField(blank=True, null=True)
+    sent = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.sender) + ' ' + str(self.receiver)

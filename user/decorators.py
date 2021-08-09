@@ -15,7 +15,7 @@ def has_perm_admin(user):
     return user.is_superuser
 
 def has_perm_baby(user):
-    return not user.is_baby
+    return user.is_baby
 
 def has_perm_ha(user):
     return user.is_ha

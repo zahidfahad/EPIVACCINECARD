@@ -75,12 +75,41 @@ def visit_profile(request,id):
 
 
 @login_required
+@user_passes_test(has_perm_admin,REDIRECT_FIELD_NAME)
+def admin_profile(request,id):
+    pass
 
+
+@login_required
+def baby_profile(request,id):
+    user = User.objects.filter(id = id)
+    details = User.objects.get(id = id)
+    my_health_assistant = BabyAttachedToHealthAssistant.objects.filter(baby_id = id, ha__divisions = details.divisions,
+                                                        ha__zilla = details.zilla,ha__word_no = details.word_no)
+    report_to = BabyAttachedToHealthAssistant.objects.get(baby_id = id, ha__divisions = details.divisions,
+                                                        ha__zilla = details.zilla,ha__word_no = details.word_no)
+    context = {
+        'user': user,
+        'details': details,
+        'my_health_assistant': my_health_assistant,
+        'report_to': report_to,
+        'id': id,
+    }
+    return render(request,'user/baby_profile.html',context)
+
+
+@login_required
 def heath_assistant_profile(request,id):
     user = User.objects.filter(id = id)
     details = User.objects.get(id = id)
     my_area_users = User.objects.filter(is_baby = True,divisions = details.divisions,
                                             zilla = details.zilla,word_no = details.word_no)
+    for i in my_area_users:
+        BabyAttachedToHealthAssistant.objects.get_or_create(ha_id = id, 
+                                                    baby_id = i.id, baby__is_baby = True)
+
+    my_area_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no)
     print(my_area_users)
     context = {
         'user': user,
@@ -111,4 +140,59 @@ def edit_profile_ha(request,id):
         return redirect('forbidden')
 
 
+@login_required
+@user_passes_test(has_perm_baby,REDIRECT_FIELD_NAME)
+def edit_profile_baby(request,id):
+    if id == request.user.id or request.user.is_superuser:
+        data = User.objects.get(id=id)
+        form = EditProfile(instance=data)
+        if request.method == 'POST':
+            form = EditProfile(request.POST,request.FILES,instance=data)
+            if form.is_valid():
+                form.save()
+                return redirect('visit_profile', id)
+        context = {
+            'form': form,
+            'data': data,
+            'id': id,
+        }
+        return render(request,'user/edit_profile_baby.html',context)
+    else:
+        return redirect('forbidden')
 
+
+@login_required
+def change_pass(request):
+    form = PasswordChangeForm(request.user)
+    try:
+        if request.method == 'POST':
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)
+                return redirect('logout')
+    except:
+        return HttpResponse('Internal Server Error')
+    context = {
+        'form': form,
+    }
+    return render(request, 'user/change_password.html', context)
+
+
+@login_required
+def chat(request,id):
+    if request.method == 'POST':
+        sender = request.user
+        msg = request.POST.get('msg')
+        Message.objects.create(
+            sender = sender,
+            receiver_id = id,
+            msg = msg
+        )
+    my_msgs = Message.objects.filter(Q(sender = request.user, receiver_id = id) | 
+                                     Q(sender_id = id, receiver = request.user))
+    context = {
+        'my_msgs': my_msgs,
+        'id': id,
+    }
+    return HttpResponse('ok')

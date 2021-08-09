@@ -1276,7 +1276,7 @@
                         <div class="flex-grow-1" style="height: 350px; overflow-y: scroll;">
                             {% for i in my_area_users %}
                             <a href="">
-                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.first_name|title }} {{ i.last_name|title }} </u> <br>{{ i.gender }}, {{ i.registrationNo }}
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
                             </a>
                             <hr>
                             <br> {% endfor %}
