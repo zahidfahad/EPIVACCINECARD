@@ -84,10 +84,15 @@ def admin_profile(request,id):
 def baby_profile(request,id):
     user = User.objects.filter(id = id)
     details = User.objects.get(id = id)
-    my_health_assistant = BabyAttachedToHealthAssistant.objects.filter(baby_id = id, ha__divisions = details.divisions,
-                                                        ha__zilla = details.zilla,ha__word_no = details.word_no)
-    report_to = BabyAttachedToHealthAssistant.objects.get(baby_id = id, ha__divisions = details.divisions,
-                                                        ha__zilla = details.zilla,ha__word_no = details.word_no)
+    my_health_assistant = BabyAttachedToHealthAssistant.objects.filter(
+        baby_id = id, ha__divisions = details.divisions,
+        ha__zilla = details.zilla,ha__word_no = details.word_no)
+    try:
+        report_to = BabyAttachedToHealthAssistant.objects.get(baby_id = id, ha__divisions = details.divisions,
+                                                      ha__zilla = details.zilla,ha__word_no = details.word_no)
+    except:
+        report_to = None
+
     context = {
         'user': user,
         'details': details,
@@ -102,11 +107,14 @@ def baby_profile(request,id):
 def heath_assistant_profile(request,id):
     user = User.objects.filter(id = id)
     details = User.objects.get(id = id)
-    my_area_users = User.objects.filter(is_baby = True,divisions = details.divisions,
-                                            zilla = details.zilla,word_no = details.word_no)
-    for i in my_area_users:
-        BabyAttachedToHealthAssistant.objects.get_or_create(ha_id = id, 
+    my_area_users_filtering = User.objects.filter(is_baby = True, divisions = details.divisions,
+                                            zilla = details.zilla, word_no = details.word_no)
+    for i in my_area_users_filtering:
+        attached_babies = BabyAttachedToHealthAssistant.objects.filter(baby_id = i.id)
+        if not attached_babies:
+            BabyAttachedToHealthAssistant.objects.get_or_create(ha_id = id, 
                                                     baby_id = i.id, baby__is_baby = True)
+
 
     my_area_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
                                                         baby__zilla = details.zilla,baby__word_no = details.word_no)
@@ -141,9 +149,8 @@ def edit_profile_ha(request,id):
 
 
 @login_required
-@user_passes_test(has_perm_baby,REDIRECT_FIELD_NAME)
 def edit_profile_baby(request,id):
-    if id == request.user.id or request.user.is_superuser:
+    if id == request.user.id or request.user.is_superuser or request.user.is_ha:
         data = User.objects.get(id=id)
         form = EditProfile(instance=data)
         if request.method == 'POST':
@@ -195,4 +202,36 @@ def chat(request,id):
         'my_msgs': my_msgs,
         'id': id,
     }
-    return HttpResponse('ok')
+    return HttpResponse(context)
+
+
+def search(request):
+    query = request.GET.get('q')
+    user = User.objects.filter(Q(username__startswith = query) | Q(registrationNo__startswith = query) |
+    Q(email__startswith = query) | Q(first_name__startswith = query) | 
+    Q(last_name__startswith = query)|Q(fatherName__startswith = query)|Q(motherName__startswith = query)|
+    Q(zilla__startswith = query) | Q(village__startswith = query) | Q(word_no__icontains = query)|
+    Q(get_vaccine_from__startswith = query))
+    if user:
+        context = {
+            'user': user,
+        }
+        return render(request,'user/search_results.html',context)
+    else:
+        return HttpResponse('No results')
+    
+
+@login_required    
+def autocomplete(request):
+    mylist = []
+    query = request.GET.get('term')
+    user = User.objects.filter(Q(username__startswith = query) | Q(registrationNo__startswith = query) |
+                                                    Q(email__startswith = query) | Q(first_name__startswith = query) | 
+                                                    Q(last_name__startswith = query)|Q(fatherName__startswith = query)|Q(motherName__startswith = query)|
+                                                    Q(zilla__startswith = query) | Q(village__startswith = query) | Q(word_no__icontains = query)|
+                                                    Q(get_vaccine_from__startswith = query))
+    if user:
+        mylist += [i.first_name for i in user]
+    else:
+        mylist = ['No user found']
+    return JsonResponse(mylist, safe=False)

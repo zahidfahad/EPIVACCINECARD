@@ -87,6 +87,8 @@ class User(AbstractUser):
     is_baby = models.BooleanField(default=False)
     is_ha = models.BooleanField(default=False)
 
+    baby_attached = models.BooleanField(default=False)
+
     def __str__(self):
         if not self.first_name or not self.last_name:
             return self.username

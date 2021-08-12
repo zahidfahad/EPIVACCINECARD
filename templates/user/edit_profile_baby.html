@@ -210,7 +210,7 @@
                             <h3 class="card-label font-weight-bolder text-dark">Account Information</h3>
                             <span class="text-muted font-weight-bold font-size-sm mt-1">Change your account settings</span>
                         </div>
-                        <form class="form" method="post" action="{% url 'edit_profile_baby' id %}">
+                        <form class="form" method="post" action="{% url 'edit_profile_baby' id %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="card-toolbar">
                                 <button type="submit" class="btn btn-success mr-2">Save Changes</button>

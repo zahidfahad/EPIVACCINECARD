@@ -16,6 +16,8 @@ urlpatterns = [
     path('edit/heath_assistant/profile/<int:id>/', edit_profile_ha, name = 'edit_profile_ha'),
     path('edit/profile/baby/<int:id>/', edit_profile_baby, name = 'edit_profile_baby'),
     path('chat/<int:id>/', chat, name = 'chat'),
+    path('search/', search, name = 'search'),
+    path('autocomplete/search/', autocomplete, name = 'autocomplete'),
 
     path('forbidden/', forbidden, name = 'forbidden'),
     path('change/password/', change_pass, name = 'change_pass'),

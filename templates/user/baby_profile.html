@@ -55,6 +55,7 @@
                                 <a class="open-button" onclick="openForm()">here</a>
                                 <div class="form-popup" id="myForm">
 
+                                    {% if report_to is not None %}
                                     <form method="POST" action="{% url 'chat' report_to.ha.id %}" id="report-form" class="form-container">
                                         {% csrf_token %}
                                         <h1>Message</h1>
@@ -64,7 +65,7 @@
                                         <button type="submit" class="btn">Send</button>
                                         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
                                     </form>
-
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -179,12 +180,8 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
-
     </div>
 </div>
 
