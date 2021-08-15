@@ -1,5 +1,15 @@
 {% extends '../base.html' %} {% load static %} {% block content %}
 <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+<style>
+    #card-table {
+        background-color: #f4efe6;
+    }
+    
+    #card-info {
+        background-color: #EBEDF3;
+    }
+</style>
+
 <div class="container">
     <div class="main-body">
 
@@ -41,18 +51,20 @@
             </div>
             <div class="col-md-8">
                 <div class="card mb-3">
-                    <div class="card-body">
+                    <div class="card-body" id="card-info">
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">Health Assistant</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
+
                                 {% for i in my_health_assistant %}
                                 <a href="{% url 'visit_profile' i.ha.id %}">
                                     {{ i.ha.first_name|title }} {{ i.ha.last_name|title }}
-                                </a> {% endfor %}
+                                </a> {% endfor %} {% if request.user.is_baby and request.user.id == id %}
                                 <br> Report problems
-                                <a class="open-button" onclick="openForm()">here</a>
+                                <a class="open-button" onclick="openForm()">here</a> {% endif %}
+
                                 <div class="form-popup" id="myForm">
 
                                     {% if report_to is not None %}
@@ -66,6 +78,7 @@
                                         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
                                     </form>
                                     {% endif %}
+
                                 </div>
                             </div>
                         </div>
@@ -125,57 +138,81 @@
                 </div>
 
                 <div class="row gutters-sm">
-                    <div class="col-sm-6 mb-3">
+                    <div class="col-sm-12 mb-3">
                         <div class="card h-100">
-                            <div class="card-body">
-                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                                <small>Web Design</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>Website Markup</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>One Page</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>Mobile Template</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>Backend API</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                                <small>Web Design</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>Website Markup</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>One Page</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>Mobile Template</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>Backend API</small>
-                                <div class="progress mb-3" style="height: 5px">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                            <div class="card-body" id="card-table">
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="table">
+                                            <thead>
+                                                <th scope="col">
+                                                    ডােজ অনুযায়ী শিশুকে টিকাকেন্দ্রে আনতে হবে (রেজিস্ট্রেশনের সময় শিশুর জন্ম তারিখ অনুযায়ী ১নং, ৪নং ও ৫নং তারিখ ঘরে “পেন্টাভ্যালেন্ট-১/পিসিভি-১, এমআর ১ম ও ২য় ডােজ টিকা পাওয়ার তারিখ টিকার ক্যালেন্ডার থেকে লিখে দিবেন)
+                                                </th>
+                                                <th scope="col" class="text-center">টিকা পাওয়ার তারিখ</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        ১। ১ম বার ও বিসিজি, পেন্টা-১, ওপিভি-১, পিসিভি-১ এবং আইপিভি-১ টিকা পাওয়ার তারিখ (টিকার ক্যালেন্ডার” থেকে)।
+                                                        <input type="text" name="dose1" id="dose1" value="
+                                                        ১। ১ম বার ও বিসিজি, পেন্টা-১, ওপিভি-১, পিসিভি-১ এবং আইপিভি-১ টিকা পাওয়ার তারিখ (টিকার ক্যালেন্ডার” থেকে)।
+                                                        " style="display: none">
+                                                    </td>
+                                                    <td>
+                                                        {{ form.date1 }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ২। ২য় বার ও পেন্টা-২, ওপিভি-২ এবং পিসিভি-২ টিকা পাওয়ার তারিখ (সেশন প্ল্যান থেকে)
+                                                        <input type="text" name="dose2" id="dose2" value="
+                                                        ২। ২য় বার ও পেন্টা-২, ওপিভি-২ এবং পিসিভি-২ টিকা পাওয়ার তারিখ (সেশন প্ল্যান থেকে)।
+                                                        " style="display: none;">
+                                                    </td>
+                                                    <td>
+                                                        {{ form.date2 }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ৩। ৩য় বার ও পেন্টা-৩, ওপিভি-৩, পিসিভি-৩ এবং আইপিভি-২ টিকা পাওয়ার তারিখ (সেশন প্ল্যান থেকে)।
+                                                        <input type="text" name="dose3" id="dose3" value="
+                                                        ৩। ৩য় বার ও পেন্টা-৩, ওপিভি-৩, পিসিভি-৩ এবং আইপিভি-২ টিকা পাওয়ার তারিখ (সেশন প্ল্যান থেকে)।
+                                                        " style="display: none;">
+                                                    </td>
+                                                    <td>
+                                                        {{ form.date3 }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ৪। ৪র্থ বার ঃ এমআর ১ম ডােজ টিকা পাওয়ার তারিখ। (“টিকার ক্যালেন্ডার” থেকে)।
+                                                        <input type="text" name="dose4" id="dose4" value="
+                                                        ৪। ৪র্থ বার ঃ এমআর ১ম ডােজ টিকা পাওয়ার তারিখ। (“টিকার ক্যালেন্ডার” থেকে)।
+                                                        " style="display: none;">
+                                                    </td>
+                                                    <td>
+                                                        {{ form.date4 }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ৫। ৫ম বার ও এমআর ২য় ডােজ টিকা পাওয়ার। তারিখ (“টিকার ক্যালেন্ডার” থেকে)
+                                                        <input type="text" name="dose5" id="dose5" value="
+                                                        ৫। ৫ম বার ও এমআর ২য় ডােজ টিকা পাওয়ার। তারিখ (“টিকার ক্যালেন্ডার” থেকে)
+                                                        " style="display: none;">
+                                                    </td>
+                                                    <td>
+                                                        {{ form.date5 }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        {% if request.user.is_ha or request.user.is_superuser %}
+                                        <button type="submit" class="btn btn-success">Save</button> {% endif %}
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

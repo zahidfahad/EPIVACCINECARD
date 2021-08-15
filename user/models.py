@@ -24,6 +24,7 @@ class User(AbstractUser):
     ]
 
     ZILLA = [
+        ('Dhaka-ঢাকা','Dhaka-ঢাকা'),
         ('Jessore – যশোর','Jessore – যশোর'),
         ('Dinajpur - দিনাজপুর','Dinajpur - দিনাজপুর'),
         ('Comilla – কুমিল্লা','Comilla – কুমিল্লা'),
@@ -68,26 +69,28 @@ class User(AbstractUser):
         ('O-','O-'),
     ]
 
-    birthcertificateNo = models.CharField(max_length=50,blank=True, null=True)
-    fatherName = models.CharField(max_length =50,blank=True, null=True)
-    motherName = models.CharField(max_length =50,blank=True, null=True)
-    registrationNo = models.CharField(max_length = 30,blank=True, null=True)
-    gender = models.CharField(max_length = 30,blank=True, null=True,choices=GENDER)
-    divisions = models.CharField(max_length = 30,blank=True, null=True,choices=DIVISIONS)
-    zilla = models.CharField(max_length = 30,blank=True, null=True,choices=ZILLA)
-    village = models.CharField(max_length = 30,blank=True, null=True)
-    union = models.CharField(max_length =30,blank=True, null=True)
-    word_no = models.CharField(max_length =30,blank=True, null=True,choices=WORD_NO)
-    holdingNo = models.CharField(max_length =50,blank=True, null=True)
-    sub_block = models.CharField(max_length =30,blank=True, null=True)
-    get_vaccine_from = models.CharField(max_length = 50,blank=True, null=True)
+    birthcertificateNo = models.CharField(max_length=1000,blank=True, null=True)
+    fatherName = models.CharField(max_length =1000,blank=True, null=True)
+    motherName = models.CharField(max_length =1000,blank=True, null=True)
+    registrationNo = models.CharField(max_length = 1000,blank=True, null=True)
+    gender = models.CharField(max_length = 1000,blank=True, null=True,choices=GENDER)
+    divisions = models.CharField(max_length = 1000,blank=True, null=True,choices=DIVISIONS)
+    zilla = models.CharField(max_length = 1000,blank=True, null=True,choices=ZILLA)
+    village = models.CharField(max_length = 1000,blank=True, null=True)
+    union = models.CharField(max_length =1000,blank=True, null=True)
+    word_no = models.CharField(max_length =1000,blank=True, null=True,choices=WORD_NO)
+    holdingNo = models.CharField(max_length =1000,blank=True, null=True)
+    sub_block = models.CharField(max_length =1000,blank=True, null=True)
+    get_vaccine_from = models.CharField(max_length = 1000,blank=True, null=True)
     profile_pic = models.ImageField(upload_to = 'Profile Pictures',blank=True, null=True)
-    blood_group = models.CharField(max_length=20,blank=True, null=True,choices=BLOD_GROUP)
+    blood_group = models.CharField(max_length=1000,blank=True, null=True,choices=BLOD_GROUP)
 
     is_baby = models.BooleanField(default=False)
     is_ha = models.BooleanField(default=False)
 
     baby_attached = models.BooleanField(default=False)
+
+    otp = models.BigIntegerField(blank=True, null=True)
 
     def __str__(self):
         if not self.first_name or not self.last_name:

@@ -1,0 +1,36 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" style="height: 450px; overflow-y: scroll;">
+                {% for i in data %} {% for j in i %}
+                <div class="shadow-sm p-3 mb-5 bg-white rounded">
+
+                    <a href="{% url 'individual_report' j.id %}">
+
+                        <img src="{{ j.profile_picURL }}" class="img-thumbnail" height="50" width="50" alt="">
+                        <strong style="color: brown;">{{ j.first_name|title }} {{ j.last_name|title }}</strong>
+                        <u style="color: brown;">({{ j.username }})</u>
+
+                    </a>
+
+                </div>
+                <br> {% endfor %} {% endfor %}
+            </div>
+            <div class="col-md-8" style="height: 450px; overflow-y: scroll;">
+                <div class="text-center">
+                    {% for i in reports %}
+                    <div class="shadow-none p-3 mb-5 bg-light rounded">
+                        {{ i.sender.first_name|title }} ({{ i.sender.username }}) <br>
+                        <strong style="font-size: 15px; word-break: break-all;">{{ i.msg }}</strong>
+                        <p>{{ i.sent }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

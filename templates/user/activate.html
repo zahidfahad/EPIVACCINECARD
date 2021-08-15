@@ -1,0 +1,20 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{% url 'activate' id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="otp">OTP</label> <br>
+                        <input type="text" required name="otp" id="otp" class="form-cotrol">
+                        <button type="submit" class="btn btn-success">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

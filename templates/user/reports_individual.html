@@ -1,0 +1,33 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+<style>
+    .text-center::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    .text-center::-webkit-scrollbar-track {
+        background-color: darkgrey;
+    }
+    
+    .text-center::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 6px red;
+    }
+</style>
+
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center m-auto w-50" style="height: 450px; overflow-y: auto;">
+                    {% for i in reports %}
+                    <div class="shadow-none p-3 mb-2 bg-light rounded mr-3">
+                        {{ i.sender.first_name|title }} ({{ i.sender.username }}) <br>
+                        <strong style="font-size: 15px; word-break: break-all; ">{{ i.msg }}</strong>
+                        <p>{{ i.sent }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
