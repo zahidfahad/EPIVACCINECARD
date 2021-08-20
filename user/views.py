@@ -124,7 +124,6 @@ def ha_register(request):
     return render(request,'registration/ha_register.html',context)
 
 
-
 @login_required
 def visit_profile(request,id):
     user = User.objects.get(id = id)
@@ -319,6 +318,7 @@ def autocomplete(request):
         mylist = ['No user found']
     return JsonResponse(mylist, safe=False)
 
+
 @login_required
 @user_passes_test(has_perm_ha,REDIRECT_FIELD_NAME)
 def reports(request):
@@ -341,66 +341,3 @@ def individual_report(request,id):
         'reports': reports,
         'id': id
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# from django.core.mail import send_mail, BadHeaderError
-# from django.contrib.auth.forms import PasswordResetForm
-# from django.template.loader import render_to_string
-# from django.utils.http import urlsafe_base64_encode
-# from django.contrib.auth.tokens import default_token_generator
-# from django.utils.encoding import force_bytes
-# from django.contrib import messages #import messages
-
-
-# def password_reset_request(request):
-#     if request.method == "POST":
-#         form = PasswordResetForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             associated_users = User.objects.filter(Q(username=username))
-#             if associated_users.exists():
-#                 for user in associated_users:
-#                     c = {
-# 					"email":user.email,
-# 					'domain':'your-website-name.com',
-# 					'site_name': 'Website Name',
-# 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
-# 					'token': default_token_generator.make_token(user),
-# 					'protocol': 'https',
-# 					}
-
-#                     message = client.messages \
-#                                 .create(
-#                                     body = f"""Hello { user.first_name }. please clink on this link to reset your password 
-#                                                {get_current_site(request).domain}
-                                    
-                                    
-#                                     """,
-#                                     from_ = '+12397471656',
-#                                     to = '+880'+str(user.username)
-#                                 )
-
-#     form = PasswordResetForm()
-#     context = {
-#         'form': form,
-#     }
-#     return render(request,'user/password_reset.html',context)

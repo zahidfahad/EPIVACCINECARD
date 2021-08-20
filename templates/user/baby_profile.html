@@ -8,6 +8,14 @@
     #card-info {
         background-color: #EBEDF3;
     }
+    
+    .verticalLine {
+        border-left: thick solid #ff0000;
+    }
+    
+    input {
+        height: 50px!important;
+    }
 </style>
 
 <div class="container">
@@ -25,7 +33,7 @@
 
         <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
-                <div class="card">
+                <div class="card mb-12">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="{{ details.profile_picURL }}" alt="Admin" class="rounded-circle" width="130">
@@ -39,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mt-3" style="height: 250px; overflow-y: scroll;">
+                <div class="card mt-3" style="height: 540px; overflow-y: scroll; background-color: #EBEDF3">
                     <ul class="list-group list-group-flush">
                         <div class="text-center">
                             <h6 class="mt-5" style="font-family: 'Times New Roman', Times, serif">
@@ -137,6 +145,7 @@
                     </div>
                 </div>
 
+
                 <div class="row gutters-sm">
                     <div class="col-sm-12 mb-3">
                         <div class="card h-100">
@@ -217,6 +226,105 @@
                         </div>
                     </div>
                 </div>
+
+
+            </div>
+        </div>
+
+        <div class="row gutters-sm" id="pdfcard">
+            <div class="col-sm-12 mb-3">
+                <div class="card h-100">
+                    <div class="card-body" id="card-table">
+                        <div class="text-center" style="font-size: 25px;">
+                            টিকা প্রদানের তারিখ ও কর্মীর স্বাক্ষর (খালি ঘরে)
+                        </div>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <div class="table-responsive">
+                                <table class="table display" id="table">
+                                    <thead>
+                                        <th scope="col" style="width: 250px;">টিকার নাম</th>
+                                        <th class="text-left" scope="col">১ম বার </th>
+                                        <th class="text-left" scope="col">২য় বার</th>
+                                        <th class="text-left" scope="col">৩য় বার</th>
+                                        <th class="text-left" scope="col">৪র্থ বার</th>
+                                        <th class="text-left" scope="col">৫ম বার</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>বিসিজি</td>
+                                            <td> <input class="form-control w-50" type="text" name="বিসিজি" id="বিসিজি" placeholder="........"></td>
+
+                                            <td> <input style="pointer-events: none; background-color: #cad3ec;" type="text" readonly class="form-control w-50" name="" id=""> </td>
+
+                                            <td><input class="form-control w-50" type="text" name="বিসিজি" id="বিসিজি" placeholder="........"></td>
+
+                                            <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                            <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                পেন্টা (ডিপিটি, হেপ-বি, হিব)
+                                            </td>
+                                            <td> <input class="form-control w-50" type="text" name="পেন্টা" id="পেন্টা" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="পেন্টা" id="পেন্টা" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="পেন্টা" id="পেন্টা" placeholder="........"></td>
+                                            <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                            <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                ওপিভি
+                                            </td>
+                                            <td> <input class="form-control w-50" type="text" name="ওপিভি" id="ওপিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="ওপিভি" id="ওপিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="ওপিভি" id="ওপিভি" placeholder="........"></td>
+                                            <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                            <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                পিসিভি
+                                            </td>
+                                            <td> <input class="form-control w-50" type="text" name="পিসিভি" id="পিসিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="পিসিভি" id="পিসিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="পিসিভি" id="পিসিভি" placeholder="........"></td>
+                                            <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                            <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>আইপিভি</td>
+                                            <td> <input class="form-control w-50" type="text" name="আইপিভি" id="আইপিভি" placeholder="........"></td>
+
+                                            <td> <input style="pointer-events: none; background-color: #cad3ec;" type="text" readonly class="form-control w-50" name="" id=""> </td>
+
+                                            <td><input class="form-control w-50" type="text" name="আইপিভি" id="আইপিভি" placeholder="........"></td>
+
+                                            <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                            <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        </tr>
+                                        <td>এমআর (হাম ও রুবেলা)</td>
+                                        <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                        <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+
+                                        <td> <input class="form-control w-50" type="text" name="এমআর" id="এমআর" placeholder="........"></td>
+                                        <td> <input class="form-control w-50" type="text" name="এমআর" id="এমআর" placeholder="........"></td>
+                                        <tr>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                {% if request.user.is_ha or request.user.is_superuser %}
+                                <button type="submit" class="btn btn-success">Save</button> {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -250,4 +358,27 @@
     });
 </script>
 
+
+<!-- <script>
+    document.getElementById('download-pdf').addEventListener('click', (event) => {
+        var vaccine_card = document.getElementById('pdfcard');
+        var opt = {
+            margin: 1,
+            filename: 'myfile.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'letter',
+                orientation: 'portrait'
+            }
+        };
+        html2pdf().from(vaccine_card).set(opt).save();
+    })
+</script> -->
 {% endblock %}
