@@ -24,30 +24,31 @@ urlpatterns = [
     path('change/password/', change_pass, name = 'change_pass'),
 
     # password
-    path('reset_password/',
-         auth_views.PasswordResetView.as_view(
-             template_name="accounts/password_reset.html"),
-         name="reset_password"),
+    # path('reset_password/',
+    #      auth_views.PasswordResetView.as_view(
+    #          template_name="accounts/password_reset.html"),
+    #      name="reset_password"),
 
-    # path('reset_password/', password_reset_request, name = 'password_reset_request'),
+    # # path('reset_password/', password_reset_request, name = 'password_reset_request'),
 
-    path('password_reset/done/',
-         auth_views.PasswordResetDoneView.as_view(
-             template_name="accounts/password_reset_sent.html"),
-         name="password_reset_done"),
+    # path('password_reset/done/',
+    #      auth_views.PasswordResetDoneView.as_view(
+    #          template_name="accounts/password_reset_sent.html"),
+    #      name="password_reset_done"),
 
-    # not responsive template
+    # # not responsive template
     path('reset/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(
              template_name="accounts/password_reset_form.html"),
          name="password_reset_confirm"),
 
-    path('reset/done/',
-         auth_views.PasswordResetCompleteView.as_view(
-             template_name="accounts/password_reset_done.html"),
-         name="password_reset_complete"),
+    # path('reset/done/',
+    #      auth_views.PasswordResetCompleteView.as_view(
+    #          template_name="accounts/password_reset_done.html"),
+    #      name="password_reset_complete"),
 
-
+    path('forgot/password/', forgot_password_number, name = 'forgot_password_number'),
+    path('password_reset/form/<str:username>/', reset_pass, name = 'reset_pass'),
     path('reports/', reports, name = 'reports'),
     path('individual/report/<int:id>/', individual_report, name = 'individual_report'),
     path('OneTimePassword/verification/<int:id>/', activate, name = 'activate'),

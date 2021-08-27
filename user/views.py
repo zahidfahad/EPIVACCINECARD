@@ -1,3 +1,4 @@
+import re
 from user.decorators import has_perm_admin_ha
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -17,6 +18,8 @@ from vaccine.forms import VaccineForm1
 from .decorators import has_perm_baby, user_passes_test, has_perm_admin_ha,has_perm_admin,has_perm_admin_baby, \
                         has_perm_ha,forbidden,REDIRECT_FIELD_NAME
 from datetime import datetime
+from django.contrib.auth.forms import SetPasswordForm
+
 
 
 from twilio.rest import Client
@@ -163,13 +166,16 @@ def baby_profile(request,id):
             data = None
     form = VaccineForm1(instance = data)
     if request.method == 'POST':
-        form = VaccineForm1(request.POST,instance = data)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.to_user = User.objects.get(id = id)
-            instance.by_user = request.user
-            instance.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if request.user.id == report_to.ha.id or request.user.is_superuser:
+            form = VaccineForm1(request.POST,instance = data)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.to_user = User.objects.get(id = id)
+                instance.by_user = request.user
+                instance.save()
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            return HttpResponse('Not Allowed')
 
     context = {
         'user': user,
@@ -198,11 +204,11 @@ def heath_assistant_profile(request,id):
     my_area_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
                                                         baby__zilla = details.zilla,baby__word_no = details.word_no)
 
-    vaccine_done = 30
+    # vaccine_done = 30
     context = {
         'user': user,
         'my_area_users': my_area_users,
-        'vaccine_done': vaccine_done,
+        # 'vaccine_done': vaccine_done,
         'reports': reports,
         'id': id,
     }
@@ -232,7 +238,13 @@ def edit_profile_ha(request,id):
 
 @login_required
 def edit_profile_baby(request,id):
-    if id == request.user.id or request.user.is_superuser or request.user.is_ha:
+    if not request.user.is_superuser:
+        try:
+            attached_ha = BabyAttachedToHealthAssistant.objects.get(baby_id = id)
+            print(attached_ha.ha.id)
+        except:
+            return HttpResponse('This baby has no health assistant and you can not edit this profile')
+    if id == request.user.id or request.user.is_superuser or request.user.id == attached_ha.ha.id:
         data = User.objects.get(id=id)
         form = EditProfile(instance=data)
         if request.method == 'POST':
@@ -247,6 +259,7 @@ def edit_profile_baby(request,id):
         }
         return render(request,'user/edit_profile_baby.html',context)
     else:
+        print(request.user.id)
         return redirect('forbidden')
 
 
@@ -341,3 +354,42 @@ def individual_report(request,id):
         'reports': reports,
         'id': id
     })
+
+
+def forgot_password_number(request):
+    if request.method == 'POST':
+        number = request.POST.get('number')
+        try:
+            req_user_number = User.objects.get(username = number)
+            otp = req_user_number.id
+            print(otp)
+            try:
+                client.messages.create(
+                                    body = f"Hello { req_user_number.first_name }. Your OTP is { otp }",
+                                    from_ = '+12397471656',
+                                    to = req_user_number.username,
+                                )
+                return redirect('reset_pass', username = req_user_number.username)
+            except:
+                return HttpResponse('error sending message.')
+        except:
+            return HttpResponse('Number Not Found')
+    return render(request,'user/give_number_for_password_reset.html')
+
+
+def reset_pass(request,username):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        otp = int(otp)
+        user_otp_exists = User.objects.get(id = otp, username = username)
+        if user_otp_exists:
+            password = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+            if password == password2:
+                user_otp_exists.set_password(password)
+                user_otp_exists.save()
+                return redirect('login')
+            else:
+                return HttpResponse('Two password fields did not match')
+    return render(request,'user/password_reset.html')
+        
