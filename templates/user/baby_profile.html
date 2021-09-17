@@ -55,12 +55,13 @@
                             </h6>
                         </div>
                     </ul>
-                    <div class="card-body">
+                    <div class="card-body" id="showdetail">
                         <div class="col-md-12">
                             <label for="">বিসিজি</label><br>
                             <u>{{ data2.date_bcg1 }}</u> <br>
                             <u>{{ data2.date_bcg2 }}</u>
-                            <h6>Total: {{ bcg }}</h6>
+                            <h5>Total: {{ bcg }}
+                            </h5>
                             <hr>
                         </div>
 
@@ -69,7 +70,8 @@
                             <u>{{ data2.date_penta1 }}</u> <br>
                             <u>{{ data2.date_penta2 }}</u><br>
                             <u>{{ data2.date_penta3 }}</u>
-                            <h6>Total: {{ penta }}</h6>
+                            <h5>Total: {{ penta }}
+                            </h5>
                             <hr>
                         </div>
 
@@ -79,7 +81,8 @@
                             <u>{{ data2.date_opv1 }}</u> <br>
                             <u>{{ data2.date_opv2 }}</u> <br>
                             <u>{{ data2.date_opv3 }}</u>
-                            <h6>Total: {{ opv }}</h6>
+                            <h5>Total: {{ opv }}
+                            </h5>
                             <hr>
                         </div>
 
@@ -89,7 +92,8 @@
                             <u>{{ data2.date_pcv1 }}</u> <br>
                             <u>{{ data2.date_pcv2 }}</u> <br>
                             <u>{{ data2.date_pcv3 }}</u>
-                            <h6>Total: {{ pcv }}</h6>
+                            <h5>Total: {{ pcv }}
+                            </h5>
                             <hr>
                         </div>
 
@@ -99,7 +103,8 @@
                             <label for="">আইপিভি</label><br>
                             <u>{{ data2.date_ipv1 }}</u> <br>
                             <u>{{ data2.date_ipv2 }}</u>
-                            <h6>Total: {{ ipv }}</h6>
+                            <h5>Total: {{ ipv }}
+                            </h5>
                             <hr>
                         </div>
 
@@ -108,7 +113,8 @@
                             <label for="">বিসিএমআরজি</label><br>
                             <u>{{ data2.date_mr1 }}</u> <br>
                             <u>{{ data2.date_mr2 }}</u>
-                            <h6>Total: {{ mr }}</h6>
+                            <h5>Total: {{ mr }}
+                            </h5>
                             <hr>
                         </div>
 
@@ -280,6 +286,7 @@
                                             </tbody>
                                         </table>
                                         {% if request.user.is_ha or request.user.is_superuser %}
+                                        <input type="checkbox" name="checked1" required id="checked1">
                                         <button type="submit" class="btn btn-success">Save</button> {% endif %}
                                     </div>
                                 </form>
@@ -291,6 +298,8 @@
 
             </div>
         </div>
+
+
 
         <div class="row gutters-sm" id="pdfcard">
             <div class="col-sm-12 mb-3">
@@ -393,6 +402,7 @@
                                     </tbody>
                                 </table>
                                 {% if request.user.is_ha or request.user.is_superuser %}
+                                <input type="checkbox" name="checked" required id="checked">
                                 <button type="submit" class="btn btn-success">Save</button> {% endif %}
                             </div>
                         </form>
@@ -431,27 +441,7 @@
     });
 </script>
 
-
-<!-- <script>
-    document.getElementById('download-pdf').addEventListener('click', (event) => {
-        var vaccine_card = document.getElementById('pdfcard');
-        var opt = {
-            margin: 1,
-            filename: 'myfile.pdf',
-            image: {
-                type: 'jpeg',
-                quality: 0.98
-            },
-            html2canvas: {
-                scale: 2
-            },
-            jsPDF: {
-                unit: 'in',
-                format: 'letter',
-                orientation: 'portrait'
-            }
-        };
-        html2pdf().from(vaccine_card).set(opt).save();
-    })
-</script> -->
+<script>
+    $('#showdetail .specific-class').length
+</script>
 {% endblock %}

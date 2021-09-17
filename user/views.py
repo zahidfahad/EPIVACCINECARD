@@ -181,77 +181,6 @@ def baby_profile(request,id):
     my_health_assistant = BabyAttachedToHealthAssistant.objects.filter(
         baby_id = id, ha__divisions = details.divisions,
         ha__zilla = details.zilla,ha__word_no = details.word_no)
-
-    date_bcg1 = 0
-    date_bcg2 = 0
-    date_penta1 = 0
-    date_penta2 = 0
-    date_penta3 = 0
-    date_opv1 = 0
-    date_opv2 = 0
-    date_opv3 = 0
-    date_pcv1 = 0
-    date_pcv2 = 0
-    date_pcv3 = 0
-    date_ipv1 = 0
-    date_ipv2 = 0
-    date_mr1 = 0
-    date_mr2 = 0
-
-    vaccine_2 = VaccineCard2.objects.filter(to_user_id = id)
-    for i in vaccine_2:
-        if i.date_bcg1:
-            date_bcg1 = 1
-
-        if i.date_bcg2:
-            date_bcg2 = 1
-
-        if i.date_penta1:
-            date_penta1 = 1
-
-        if i.date_penta2:
-            date_penta2 = 1
-
-        if i.date_penta3:
-            date_penta3 = 1
-
-        if i.date_opv1:
-            date_opv1 = 1
-
-        if i.date_opv2:
-            date_opv2 = 1
-
-        if i.date_opv3:
-            date_opv3 = 1
-
-        if i.date_pcv1:
-            date_pcv1 = 1
-
-        if i.date_pcv2:
-            date_pcv2 = 1
-
-        if i.date_pcv3:
-            date_pcv3 = 1
-
-        if i.date_ipv1:
-            date_ipv1 = 1
-
-        if i.date_ipv2:
-            date_ipv2 = 1
-
-        if i.date_mr1:
-            date_mr1 = 1
-
-        if i.date_mr2:
-            date_mr2 = 1          
-
-    bcg = date_bcg1 + date_bcg2
-    penta = date_penta1 + date_penta2 + date_penta3
-    opv = date_opv1 + date_opv2 + date_opv3
-    pcv  = date_pcv1 + date_pcv2 + date_pcv3
-    ipv = date_ipv1 + date_ipv2
-    mr = date_mr1 + date_mr2
-
     try:
         report_to = BabyAttachedToHealthAssistant.objects.get(baby_id = id, ha__divisions = details.divisions,
                                                       ha__zilla = details.zilla,ha__word_no = details.word_no)
@@ -269,78 +198,73 @@ def baby_profile(request,id):
         data2 = VaccineCard2.objects.get(to_user_id = id)
     except:
         data2 = None
+
+    bcg1  = 0
+    bcg2 = 0
+    penta1 = 0
+    penta2 = 0
+    penta3 = 0
+    opv1 = 0
+    opv2 = 0
+    opv3 = 0
+    pcv1 = 0
+    pcv2 = 0
+    pcv3 = 0
+    ipv1 = 0
+    ipv2 = 0
+    mr1 = 0
+    mr2 = 0
+    v2 = VaccineCard2.objects.filter(to_user_id = id )
+    for i in v2:
+        if i.date_bcg1:
+            bcg1 = 1
+        if i.date_bcg2:
+            bcg2 = 1
+
+        if i.date_penta1:
+            penta1 = 1
+        if i.date_penta2:
+            penta2 = 1
+        if i.date_penta3:
+            penta3 = 1
+
+        if i.date_opv1:
+            opv1 = 1
+        if i.date_opv2:
+            opv2 = 1
+        if i.date_opv3:
+            opv3 = 1
+
+        if i.date_pcv1:
+            pcv1 = 1
+        if i.date_pcv2:
+            pcv2 = 1
+        if i.date_pcv3:
+            pcv3 = 1
+
+        if i.date_ipv1:
+            ipv1 = 1
+        if i.date_ipv2:
+            ipv2 = 1
+
+        if i.date_mr1:
+            mr1 = 1
+        if i.date_mr2:
+            mr2 = 1         
+
+    bcg = bcg1 + bcg2
+    penta = penta1 + penta2 + penta3
+    opv = opv1 + opv2 + opv3
+    pcv = pcv1 + pcv2 + pcv3
+    ipv = ipv1 + ipv2
+    mr = mr1 + mr2
         
     form = VaccineForm1(instance = data)
     if request.method == 'POST':
-        date_bcg1 = request.POST.get('date_bcg1')
-        date_bcg2 = request.POST.get('date_bcg2')
-        
-        date_penta1 = request.POST.get('date_penta1')
-        date_penta2 = request.POST.get('date_penta2')
-        date_penta3 = request.POST.get('date_penta3')
+        checked1 = request.POST.get('checked1')
+        checked = request.POST.get('checked')
 
-        date_opv1 = request.POST.get('date_opv1')
-        date_opv2 = request.POST.get('date_opv2')
-        date_opv3 = request.POST.get('date_opv3')
-
-        date_pcv1 = request.POST.get('date_pcv1')
-        date_pcv2 = request.POST.get('date_pcv2')
-        date_pcv3 = request.POST.get('date_pcv3')
-
-        date_ipv1 = request.POST.get('date_ipv1')
-        date_ipv2 = request.POST.get('date_ipv2')
-
-        date_mr1 = request.POST.get('date_mr1')
-        date_mr2 = request.POST.get('date_mr2')
-
-        # checking permission
-        if request.user.id == report_to.ha.id or request.user.is_superuser:
-            
-            if data2 is not None:
-                # to update existing
-                VaccineCard2.objects.filter(id = data2.id).update(
-                                                                by_user = request.user,
-                                                                to_user_id = id,
-                                                                date_bcg1 = date_bcg1,
-                                                                date_bcg2 = date_bcg2,
-                                                                date_penta1 = date_penta1,
-                                                                date_penta2 = date_penta2,
-                                                                date_penta3 = date_penta3,
-                                                                date_opv1 = date_opv1,
-                                                                date_opv2 = date_opv2,
-                                                                date_opv3 = date_opv3,
-                                                                date_pcv1 = date_pcv1,
-                                                                date_pcv2 = date_pcv2,
-                                                                date_pcv3 = date_pcv3,
-                                                                date_ipv1 = date_ipv1,
-                                                                date_ipv2 = date_ipv2,
-                                                                date_mr1 = date_mr1,
-                                                                date_mr2 = date_mr2,
-                                                            )
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            # to create
-            else:
-                VaccineCard2.objects.create(
-                    by_user = request.user,
-                    to_user_id = id,
-                    date_bcg1 = date_bcg1,
-                    date_bcg2 = date_bcg2,
-                    date_penta1 = date_penta1,
-                    date_penta2 = date_penta2,
-                    date_penta3 = date_penta3,
-                    date_opv1 = date_opv1,
-                    date_opv2 = date_opv2,
-                    date_opv3 = date_opv3,
-                    date_pcv1 = date_pcv1,
-                    date_pcv2 = date_pcv2,
-                    date_pcv3 = date_pcv3,
-                    date_ipv1 = date_ipv1,
-                    date_ipv2 = date_ipv2,
-                    date_mr1 = date_mr1,
-                    date_mr2 = date_mr2,
-                )
-                
-
+        if checked1 is not None:
             form = VaccineForm1(request.POST,instance = data)
             if form.is_valid():
                 instance = form.save(commit=False)
@@ -348,9 +272,77 @@ def baby_profile(request,id):
                 instance.by_user = request.user
                 instance.save()
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        else:
-            return HttpResponse('Not Allowed')
+
+        if checked is not None:
+            date_bcg1 = request.POST.get('date_bcg1')
+            date_bcg2 = request.POST.get('date_bcg2')
+            
+            date_penta1 = request.POST.get('date_penta1')
+            date_penta2 = request.POST.get('date_penta2')
+            date_penta3 = request.POST.get('date_penta3')
+
+            date_opv1 = request.POST.get('date_opv1')
+            date_opv2 = request.POST.get('date_opv2')
+            date_opv3 = request.POST.get('date_opv3')
+
+            date_pcv1 = request.POST.get('date_pcv1')
+            date_pcv2 = request.POST.get('date_pcv2')
+            date_pcv3 = request.POST.get('date_pcv3')
+
+            date_ipv1 = request.POST.get('date_ipv1')
+            date_ipv2 = request.POST.get('date_ipv2')
+
+            date_mr1 = request.POST.get('date_mr1')
+            date_mr2 = request.POST.get('date_mr2')
+
+            # checking permission
+            if request.user.id == report_to.ha.id or request.user.is_superuser:
+                if data2 is not None:
+                    # to update existing
+                    VaccineCard2.objects.filter(id = data2.id).update(
+                                                                    by_user = request.user,
+                                                                    to_user_id = id,
+                                                                    date_bcg1 = date_bcg1,
+                                                                    date_bcg2 = date_bcg2,
+                                                                    date_penta1 = date_penta1,
+                                                                    date_penta2 = date_penta2,
+                                                                    date_penta3 = date_penta3,
+                                                                    date_opv1 = date_opv1,
+                                                                    date_opv2 = date_opv2,
+                                                                    date_opv3 = date_opv3,
+                                                                    date_pcv1 = date_pcv1,
+                                                                    date_pcv2 = date_pcv2,
+                                                                    date_pcv3 = date_pcv3,
+                                                                    date_ipv1 = date_ipv1,
+                                                                    date_ipv2 = date_ipv2,
+                                                                    date_mr1 = date_mr1,
+                                                                    date_mr2 = date_mr2,
+                                                                )
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                # to create
+                else:
+                    VaccineCard2.objects.create(
+                        by_user = request.user,
+                        to_user_id = id,
+                        date_bcg1 = date_bcg1,
+                        date_bcg2 = date_bcg2,
+                        date_penta1 = date_penta1,
+                        date_penta2 = date_penta2,
+                        date_penta3 = date_penta3,
+                        date_opv1 = date_opv1,
+                        date_opv2 = date_opv2,
+                        date_opv3 = date_opv3,
+                        date_pcv1 = date_pcv1,
+                        date_pcv2 = date_pcv2,
+                        date_pcv3 = date_pcv3,
+                        date_ipv1 = date_ipv1,
+                        date_ipv2 = date_ipv2,
+                        date_mr1 = date_mr1,
+                        date_mr2 = date_mr2,
+                    )
+                
+            else:
+                return HttpResponse('Not Allowed')
 
     context = {
         'data2': data2,
@@ -361,11 +353,11 @@ def baby_profile(request,id):
         'form': form,
         'id': id,
         'bcg': bcg,
-        'pcv': pcv,
         'penta': penta,
+        'opv': opv,
+        'pcv': pcv,
         'ipv': ipv,
         'mr': mr,
-        'opv': opv,
     }
     return render(request,'user/baby_profile.html',context)
 
@@ -385,18 +377,12 @@ def heath_assistant_profile(request,id):
 
     my_area_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
                                                         baby__zilla = details.zilla,baby__word_no = details.word_no)
-    
+
     context = {
         'user': user,
         'my_area_users': my_area_users,
         'reports': reports,
         'id': id,
-        'bcg': bcg,
-        'pcv': pcv,
-        'penta': penta,
-        'ipv': ipv,
-        'mr': mr,
-        'opv': opv,
     }
     return render(request,'user/ha_profile.html',context)
 
