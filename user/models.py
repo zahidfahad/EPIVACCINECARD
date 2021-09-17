@@ -72,7 +72,7 @@ class User(AbstractUser):
     birthcertificateNo = models.CharField(max_length=1000,blank=True, null=True)
     fatherName = models.CharField(max_length =1000,blank=True, null=True)
     motherName = models.CharField(max_length =1000,blank=True, null=True)
-    registrationNo = models.CharField(max_length = 1000,blank=True, null=True)
+    registrationNo = models.CharField(max_length = 1000,blank=True, null=True,unique=True)
     gender = models.CharField(max_length = 1000,blank=True, null=True,choices=GENDER)
     divisions = models.CharField(max_length = 1000,blank=True, null=True,choices=DIVISIONS)
     zilla = models.CharField(max_length = 1000,blank=True, null=True,choices=ZILLA)
@@ -90,7 +90,7 @@ class User(AbstractUser):
 
     baby_attached = models.BooleanField(default=False)
 
-    otp = models.BigIntegerField(blank=True, null=True)
+    otp = models.BigIntegerField(blank=True, null=True,unique=True)
 
     def __str__(self):
         if not self.first_name or not self.last_name:
@@ -135,3 +135,7 @@ class Message(models.Model):
 
     def __str__(self):
         return str(self.sender) + ' ' + str(self.receiver)
+
+
+# class OTP(models.Model):
+#     otp = models.PositiveBigIntegerField(unique=True,blank=True,null=True)

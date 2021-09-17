@@ -55,6 +55,67 @@
                             </h6>
                         </div>
                     </ul>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <label for="">বিসিজি</label><br>
+                            <u>{{ data2.date_bcg1 }}</u> <br>
+                            <u>{{ data2.date_bcg2 }}</u>
+                            <h6>Total: {{ bcg }}</h6>
+                            <hr>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="">পেন্টা (ডিপিটি, হেপ-বি, হিব)</label><br>
+                            <u>{{ data2.date_penta1 }}</u> <br>
+                            <u>{{ data2.date_penta2 }}</u><br>
+                            <u>{{ data2.date_penta3 }}</u>
+                            <h6>Total: {{ penta }}</h6>
+                            <hr>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <label for="">ওপিভি</label><br>
+                            <u>{{ data2.date_opv1 }}</u> <br>
+                            <u>{{ data2.date_opv2 }}</u> <br>
+                            <u>{{ data2.date_opv3 }}</u>
+                            <h6>Total: {{ opv }}</h6>
+                            <hr>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <label for="">পিসিভি</label><br>
+                            <u>{{ data2.date_pcv1 }}</u> <br>
+                            <u>{{ data2.date_pcv2 }}</u> <br>
+                            <u>{{ data2.date_pcv3 }}</u>
+                            <h6>Total: {{ pcv }}</h6>
+                            <hr>
+                        </div>
+
+
+
+                        <div class="col-md-12">
+                            <label for="">আইপিভি</label><br>
+                            <u>{{ data2.date_ipv1 }}</u> <br>
+                            <u>{{ data2.date_ipv2 }}</u>
+                            <h6>Total: {{ ipv }}</h6>
+                            <hr>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <label for="">বিসিএমআরজি</label><br>
+                            <u>{{ data2.date_mr1 }}</u> <br>
+                            <u>{{ data2.date_mr2 }}</u>
+                            <h6>Total: {{ mr }}</h6>
+                            <hr>
+                        </div>
+
+
+
+
+                    </div>
                 </div>
             </div>
             <div class="col-md-8">
@@ -253,23 +314,27 @@
                                     <tbody>
                                         <tr>
                                             <td>বিসিজি</td>
-                                            <td> <input class="form-control w-50" type="text" name="বিসিজি" id="বিসিজি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="date_bcg1" id="date_bcg1" placeholder="........" value="{{ data2.date_bcg1 }}">
 
-                                            <td> <input style="pointer-events: none; background-color: #cad3ec;" type="text" readonly class="form-control w-50" name="" id=""> </td>
 
-                                            <td><input class="form-control w-50" type="text" name="বিসিজি" id="বিসিজি" placeholder="........"></td>
+                                                <td> <input style="pointer-events: none; background-color: #cad3ec;" type="text" readonly class="form-control w-50" name="" id=""> </td>
 
-                                            <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
-                                            <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                                <td><input class="form-control w-50" type="text" name="date_bcg2" id="date_bcg2" value="{{ data2.date_bcg2 }}" placeholder="........"></td>
+
+                                                <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
+                                                <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                         </tr>
 
                                         <tr>
                                             <td>
                                                 পেন্টা (ডিপিটি, হেপ-বি, হিব)
                                             </td>
-                                            <td> <input class="form-control w-50" type="text" name="পেন্টা" id="পেন্টা" placeholder="........"></td>
-                                            <td> <input class="form-control w-50" type="text" name="পেন্টা" id="পেন্টা" placeholder="........"></td>
-                                            <td> <input class="form-control w-50" type="text" name="পেন্টা" id="পেন্টা" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="date_penta1" value="{{ data2.date_penta1 }}" id="date_penta1" placeholder="........"></td>
+
+                                            <td> <input class="form-control w-50" type="text" name="date_penta2" value="{{ data2.date_penta2 }}" id="date_penta2" placeholder="........"></td>
+
+                                            <td> <input class="form-control w-50" type="text" name="date_penta3" value="{{ data2.date_penta3 }}" id="date_penta3" placeholder="........"></td>
+
                                             <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                             <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                         </tr>
@@ -278,9 +343,12 @@
                                             <td>
                                                 ওপিভি
                                             </td>
-                                            <td> <input class="form-control w-50" type="text" name="ওপিভি" id="ওপিভি" placeholder="........"></td>
-                                            <td> <input class="form-control w-50" type="text" name="ওপিভি" id="ওপিভি" placeholder="........"></td>
-                                            <td> <input class="form-control w-50" type="text" name="ওপিভি" id="ওপিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="date_opv1" id="date_opv1" value="{{ data2.date_opv1 }}" placeholder="........"></td>
+
+                                            <td> <input class="form-control w-50" type="text" name="date_opv2" id="date_opv2" value="{{ data2.date_opv2 }}" placeholder="........"></td>
+
+                                            <td> <input class="form-control w-50" type="text" name="date_opv3" id="date_opv3" value="{{ data2.date_opv3 }}" placeholder="........"></td>
+
                                             <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                             <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                         </tr>
@@ -289,31 +357,36 @@
                                             <td>
                                                 পিসিভি
                                             </td>
-                                            <td> <input class="form-control w-50" type="text" name="পিসিভি" id="পিসিভি" placeholder="........"></td>
-                                            <td> <input class="form-control w-50" type="text" name="পিসিভি" id="পিসিভি" placeholder="........"></td>
-                                            <td> <input class="form-control w-50" type="text" name="পিসিভি" id="পিসিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="date_pcv1" id="date_pcv1" value="{{ data2.date_pcv1 }}" placeholder="........"></td>
+
+                                            <td> <input class="form-control w-50" type="text" name="date_pcv2" id="date_pcv2" value="{{ data2.date_pcv2 }}" placeholder="........"></td>
+
+                                            <td> <input class="form-control w-50" type="text" name="date_pcv3" id="date_pcv3" value="{{ data2.date_pcv3 }}" placeholder="........"></td>
+
                                             <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                             <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                         </tr>
 
                                         <tr>
                                             <td>আইপিভি</td>
-                                            <td> <input class="form-control w-50" type="text" name="আইপিভি" id="আইপিভি" placeholder="........"></td>
+                                            <td> <input class="form-control w-50" type="text" name="date_ipv1" id="date_ipv1" value="{{ data2.date_ipv1 }}" placeholder="........"></td>
 
                                             <td> <input style="pointer-events: none; background-color: #cad3ec;" type="text" readonly class="form-control w-50" name="" id=""> </td>
 
-                                            <td><input class="form-control w-50" type="text" name="আইপিভি" id="আইপিভি" placeholder="........"></td>
+                                            <td><input class="form-control w-50" type="text" name="date_ipv2" id="date_ipv2" value="{{ data2.date_ipv2 }}" placeholder="........"></td>
 
                                             <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                             <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
                                         </tr>
                                         <td>এমআর (হাম ও রুবেলা)</td>
                                         <td><input style="pointer-events: none; background-color: #cbd5f3;" type="text" readonly class="form-control w-50" name="" id=""></td>
-                                        <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+
                                         <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
 
-                                        <td> <input class="form-control w-50" type="text" name="এমআর" id="এমআর" placeholder="........"></td>
-                                        <td> <input class="form-control w-50" type="text" name="এমআর" id="এমআর" placeholder="........"></td>
+                                        <td><input style="pointer-events: none; background-color: #bdc8e9;" type="text" readonly class="form-control w-50" name="" id=""></td>
+
+                                        <td> <input class="form-control w-50" type="text" name="date_mr1" id="date_mr1" value="{{ data2.date_mr1 }}" placeholder="........"></td>
+                                        <td> <input class="form-control w-50" type="text" name="date_mr2" id="date_mr2" value="{{ data2.date_mr2 }}" placeholder="........"></td>
                                         <tr>
 
                                         </tr>

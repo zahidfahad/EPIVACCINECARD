@@ -10,10 +10,12 @@ urlpatterns = [
 
     path('', dashboard, name = 'dashboard'),
     path('register/', register, name= 'register'),
+    path('superuser/profile/<int:id>/', admin_profile, name = 'admin_profile'),
     path('health_assistant/register/', ha_register, name = 'ha_register'),
     path('health_assistant/profile/<int:id>/', heath_assistant_profile, name = 'heath_assistant_profile'),
     path('baby/profile/<int:id>/', baby_profile, name = 'baby_profile'),
     path('visiting/profile/<int:id>/', visit_profile, name = 'visit_profile'),
+    path('edit/profile/superuser/<int:id>/', edit_profile_admin, name = 'edit_profile_admin'),
     path('edit/heath_assistant/profile/<int:id>/', edit_profile_ha, name = 'edit_profile_ha'),
     path('edit/profile/baby/<int:id>/', edit_profile_baby, name = 'edit_profile_baby'),
     path('chat/<int:id>/', chat, name = 'chat'),
