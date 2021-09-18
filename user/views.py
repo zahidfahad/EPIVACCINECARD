@@ -261,17 +261,26 @@ def baby_profile(request,id):
         
     form = VaccineForm1(instance = data)
     if request.method == 'POST':
+        try:
+            attached_ha = BabyAttachedToHealthAssistant.objects.get(baby_id = id)
+        except:
+            return HttpResponse('This baby has no health assistant and you can not edit this profile')
+
         checked1 = request.POST.get('checked1')
         checked = request.POST.get('checked')
 
         if checked1 is not None:
-            form = VaccineForm1(request.POST,instance = data)
-            if form.is_valid():
-                instance = form.save(commit=False)
-                instance.to_user = User.objects.get(id = id)
-                instance.by_user = request.user
-                instance.save()
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            if request.user.id == report_to.ha.id or request.user.is_superuser:
+                form = VaccineForm1(request.POST,instance = data)
+                if form.is_valid():
+                    instance = form.save(commit=False)
+                    instance.to_user = User.objects.get(id = id)
+                    instance.by_user = request.user
+                    instance.save()
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            else:
+                return HttpResponse('Not Allowed')
+
 
         if checked is not None:
             date_bcg1 = request.POST.get('date_bcg1')
@@ -318,7 +327,11 @@ def baby_profile(request,id):
                                                                     date_mr1 = date_mr1,
                                                                     date_mr2 = date_mr2,
                                                                 )
-                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                    try:
+                        data2 = VaccineCard2.objects.get(to_user_id = id)
+                    except:
+                        data2 = None
+                    
                 # to create
                 else:
                     VaccineCard2.objects.create(
@@ -343,7 +356,12 @@ def baby_profile(request,id):
                 
             else:
                 return HttpResponse('Not Allowed')
-
+                
+    try:
+        data2 = VaccineCard2.objects.get(to_user_id = id)
+    except:
+        data2 = None
+        
     context = {
         'data2': data2,
         'user': user,

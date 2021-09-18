@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Pdf</title>
+    <style>
+        th {
+            font-size: 15px;
+        }
+        
+        td {
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <table border="1" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>BCG</th>
+                    <th>Penta</th>
+                    <th style="font-size: 13px;">OPV</th>
+                    <th>PCV</th>
+                    <th>IPV</th>
+                    <th>MR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ v2.date_bcg1 }} <br> {{ v2.date_bcg2 }}
+                    </td>
+                    <td>{{ v2.date_penta1 }}
+                        <br> {{ v2.date_penta2 }} <br> {{ v2.date_penta3 }}
+                    </td>
+                    <td>{{ v2.date_opv1 }}
+                        <br> {{ v2.date_opv2 }}
+                        <br> {{ v2.date_opv3 }}
+
+                    </td>
+                    <td>{{ v2.date_pcv1 }}
+                        <br> {{ v2.date_pcv2 }} <br> {{ v2.date_pcv3 }}
+                    </td>
+                    <td>{{ v2.date_ipv1 }} <br> {{ v2.date_ipv2 }}
+                    </td>
+                    <td>{{ v2.date_mr1 }}
+                        <br> {{ v2.date_mr2 }}
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <div id="thanks" style="color: brown;">Thank you!</div>
+    </main>
+    <footer id="thanks" style="color: red;">
+        pdf was created on a computer and is valid without the signature and seal.
+    </footer>
+</body>
+
+</html>
