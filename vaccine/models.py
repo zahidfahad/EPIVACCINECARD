@@ -37,27 +37,39 @@ class VaccineCard2(models.Model):
     date_bcg1 = models.CharField(max_length=500,blank=True, null=True)
     date_bcg2 = models.CharField(max_length=500,blank=True, null=True)
 
+    bcg = models.IntegerField(blank=True,null=True)
+
     পেন্টা = models.TextField(blank=True, null=True,default='পেন্টা (ডিপিটি, হেপ-বি, হিব)')
     date_penta1 = models.CharField(max_length=500,blank=True, null=True)
     date_penta2 = models.CharField(max_length=500,blank=True, null=True)
     date_penta3 = models.CharField(max_length=500,blank=True, null=True)
+
+    penta = models.IntegerField(blank=True,null=True)
 
     ওপিভি = models.TextField(blank=True, null=True,default='ওপিভি')
     date_opv1 = models.CharField(max_length=500,blank=True, null=True)
     date_opv2 = models.CharField(max_length=500,blank=True, null=True)
     date_opv3 = models.CharField(max_length=500,blank=True, null=True)
 
+    opv = models.IntegerField(blank=True,null=True)
+
     পিসিভি = models.TextField(blank=True, null=True,default='পিসিভি')
     date_pcv1 = models.CharField(max_length=500,blank=True, null=True)
     date_pcv2 = models.CharField(max_length=500,blank=True, null=True)
     date_pcv3 = models.CharField(max_length=500,blank=True, null=True)
 
+    pcv = models.IntegerField(blank=True,null=True)
+
     আইপিভি = models.TextField(blank=True, null=True,default='আইপিভি')
     date_ipv1 = models.CharField(max_length=500,blank=True, null=True)
     date_ipv2 = models.CharField(max_length=500,blank=True, null=True)
 
+    ipv = models.IntegerField(blank=True,null=True)
+
     এমআর  = models.TextField(blank=True, null=True,default='এমআর ')
     date_mr1 = models.CharField(max_length=500,blank=True, null=True)
     date_mr2 = models.CharField(max_length=500,blank=True, null=True)
+
+    mr = models.IntegerField(blank=True,null=True)
 
     created = models.DateField(auto_now_add=True)

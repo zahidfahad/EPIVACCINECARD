@@ -199,65 +199,86 @@ def baby_profile(request,id):
     except:
         data2 = None
 
-    bcg1  = 0
-    bcg2 = 0
-    penta1 = 0
-    penta2 = 0
-    penta3 = 0
-    opv1 = 0
-    opv2 = 0
-    opv3 = 0
-    pcv1 = 0
-    pcv2 = 0
-    pcv3 = 0
-    ipv1 = 0
-    ipv2 = 0
-    mr1 = 0
-    mr2 = 0
     v2 = VaccineCard2.objects.filter(to_user_id = id )
     for i in v2:
-        if i.date_bcg1:
-            bcg1 = 1
-        if i.date_bcg2:
-            bcg2 = 1
+        if i.date_bcg1 and i.date_bcg2:
+            i.bcg = 2
+        if i.date_bcg1 and not i.date_bcg2:
+            i.bcg = 1
+        if i.date_bcg2 and not i.date_bcg1:
+            i.bcg = 1
+        if not i.date_bcg1 and not i.date_bcg2:
+            i.bcg = 0
 
-        if i.date_penta1:
-            penta1 = 1
-        if i.date_penta2:
-            penta2 = 1
-        if i.date_penta3:
-            penta3 = 1
+        if i.date_penta1 and i.date_penta2 and i.date_penta3:
+            i.penta = 3
+        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+            i.penta = 0
+        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+            i.penta = 2
+        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+            i.penta = 2
+        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+            i.penta = 2
+        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+            i.penta = 1
+        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+            i.penta = 1
+        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+            i.penta = 1
 
-        if i.date_opv1:
-            opv1 = 1
-        if i.date_opv2:
-            opv2 = 1
-        if i.date_opv3:
-            opv3 = 1
+        if i.date_opv1 and i.date_opv2 and i.date_opv3:
+            i.opv = 3
+        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+            i.opv = 0
+        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+            i.opv = 2
+        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+            i.opv = 2
+        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+            i.opv = 2
+        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+            i.opv = 1
+        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+            i.opv = 1
+        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+            i.opv = 1
 
-        if i.date_pcv1:
-            pcv1 = 1
-        if i.date_pcv2:
-            pcv2 = 1
-        if i.date_pcv3:
-            pcv3 = 1
+        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+            i.pcv = 3
+        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+            i.pcv = 0
+        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+            i.pcv = 2
+        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+            i.pcv = 2
+        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+            i.pcv = 2
+        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+            i.pcv = 1
+        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+            i.pcv = 1
+        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+            i.pcv = 1
 
-        if i.date_ipv1:
-            ipv1 = 1
-        if i.date_ipv2:
-            ipv2 = 1
+        if i.date_ipv1 and i.date_ipv2:
+            i.ipv = 2
+        if i.date_ipv1 and not i.date_ipv2:
+            i.ipv = 1
+        if i.date_ipv2 and not i.date_ipv1:
+            i.ipv = 1
+        if not i.date_ipv1 and not i.date_ipv2:
+            i.ipv = 0
 
-        if i.date_mr1:
-            mr1 = 1
-        if i.date_mr2:
-            mr2 = 1         
-
-    bcg = bcg1 + bcg2
-    penta = penta1 + penta2 + penta3
-    opv = opv1 + opv2 + opv3
-    pcv = pcv1 + pcv2 + pcv3
-    ipv = ipv1 + ipv2
-    mr = mr1 + mr2
+        if i.date_mr1 and i.date_mr2:
+            i.mr = 2
+        if i.date_mr1 and not i.date_mr2:
+            i.mr = 1
+        if i.date_mr2 and not i.date_mr1:
+            i.mr = 1
+        if not i.date_mr1 and not i.date_mr2:
+            i.mr = 0
+        i.save()
         
     form = VaccineForm1(instance = data)
     if request.method == 'POST':
@@ -326,7 +347,89 @@ def baby_profile(request,id):
                                                                     date_ipv2 = date_ipv2,
                                                                     date_mr1 = date_mr1,
                                                                     date_mr2 = date_mr2,
+                    
                                                                 )
+                                                                
+                    v2 = VaccineCard2.objects.filter(to_user_id = id )
+                    for i in v2:
+                        if i.date_bcg1 and i.date_bcg2:
+                            i.bcg = 2
+                        if i.date_bcg1 and not i.date_bcg2:
+                            i.bcg = 1
+                        if i.date_bcg2 and not i.date_bcg1:
+                            i.bcg = 1
+                        if not i.date_bcg1 and not i.date_bcg2:
+                            i.bcg = 0
+
+                        if i.date_penta1 and i.date_penta2 and i.date_penta3:
+                            i.penta = 3
+                        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                            i.penta = 0
+                        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+                            i.penta = 2
+                        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+                            i.penta = 2
+                        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+                            i.penta = 2
+                        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+                            i.penta = 1
+                        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+                            i.penta = 1
+                        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                            i.penta = 1
+
+                        if i.date_opv1 and i.date_opv2 and i.date_opv3:
+                            i.opv = 3
+                        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                            i.opv = 0
+                        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+                            i.opv = 2
+                        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+                            i.opv = 2
+                        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+                            i.opv = 2
+                        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+                            i.opv = 1
+                        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+                            i.opv = 1
+                        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                            i.opv = 1
+
+                        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+                            i.pcv = 3
+                        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                            i.pcv = 0
+                        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+                            i.pcv = 2
+                        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+                            i.pcv = 2
+                        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+                            i.pcv = 2
+                        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+                            i.pcv = 1
+                        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+                            i.pcv = 1
+                        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                            i.pcv = 1
+
+                        if i.date_ipv1 and i.date_ipv2:
+                            i.ipv = 2
+                        if i.date_ipv1 and not i.date_ipv2:
+                            i.ipv = 1
+                        if i.date_ipv2 and not i.date_ipv1:
+                            i.ipv = 1
+                        if not i.date_ipv1 and not i.date_ipv2:
+                            i.ipv = 0
+
+                        if i.date_mr1 and i.date_mr2:
+                            i.mr = 2
+                        if i.date_mr1 and not i.date_mr2:
+                            i.mr = 1
+                        if i.date_mr2 and not i.date_mr1:
+                            i.mr = 1
+                        if not i.date_mr1 and not i.date_mr2:
+                            i.mr = 0
+                        i.save()
                     try:
                         data2 = VaccineCard2.objects.get(to_user_id = id)
                     except:
@@ -353,6 +456,87 @@ def baby_profile(request,id):
                         date_mr1 = date_mr1,
                         date_mr2 = date_mr2,
                     )
+
+                    v2 = VaccineCard2.objects.filter(to_user_id = id )
+                    for i in v2:
+                        if i.date_bcg1 and i.date_bcg2:
+                            i.bcg = 2
+                        if i.date_bcg1 and not i.date_bcg2:
+                            i.bcg = 1
+                        if i.date_bcg2 and not i.date_bcg1:
+                            i.bcg = 1
+                        if not i.date_bcg1 and not i.date_bcg2:
+                            i.bcg = 0
+
+                        if i.date_penta1 and i.date_penta2 and i.date_penta3:
+                            i.penta = 3
+                        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                            i.penta = 0
+                        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+                            i.penta = 2
+                        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+                            i.penta = 2
+                        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+                            i.penta = 2
+                        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+                            i.penta = 1
+                        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+                            i.penta = 1
+                        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                            i.penta = 1
+
+                        if i.date_opv1 and i.date_opv2 and i.date_opv3:
+                            i.opv = 3
+                        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                            i.opv = 0
+                        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+                            i.opv = 2
+                        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+                            i.opv = 2
+                        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+                            i.opv = 2
+                        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+                            i.opv = 1
+                        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+                            i.opv = 1
+                        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                            i.opv = 1
+
+                        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+                            i.pcv = 3
+                        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                            i.pcv = 0
+                        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+                            i.pcv = 2
+                        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+                            i.pcv = 2
+                        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+                            i.pcv = 2
+                        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+                            i.pcv = 1
+                        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+                            i.pcv = 1
+                        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                            i.pcv = 1
+
+                        if i.date_ipv1 and i.date_ipv2:
+                            i.ipv = 2
+                        if i.date_ipv1 and not i.date_ipv2:
+                            i.ipv = 1
+                        if i.date_ipv2 and not i.date_ipv1:
+                            i.ipv = 1
+                        if not i.date_ipv1 and not i.date_ipv2:
+                            i.ipv = 0
+
+                        if i.date_mr1 and i.date_mr2:
+                            i.mr = 2
+                        if i.date_mr1 and not i.date_mr2:
+                            i.mr = 1
+                        if i.date_mr2 and not i.date_mr1:
+                            i.mr = 1
+                        if not i.date_mr1 and not i.date_mr2:
+                            i.mr = 0
+                        i.save()
                 
             else:
                 return HttpResponse('Not Allowed')
@@ -370,12 +554,7 @@ def baby_profile(request,id):
         'report_to': report_to,
         'form': form,
         'id': id,
-        'bcg': bcg,
-        'penta': penta,
-        'opv': opv,
-        'pcv': pcv,
-        'ipv': ipv,
-        'mr': mr,
+        'v2': v2,
     }
     return render(request,'user/baby_profile.html',context)
 
@@ -396,11 +575,93 @@ def heath_assistant_profile(request,id):
     my_area_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
                                                         baby__zilla = details.zilla,baby__word_no = details.word_no)
 
+    v2 = VaccineCard2.objects.filter(by_user_id = id )
+    for i in v2:
+        if i.date_bcg1 and i.date_bcg2:
+            i.bcg = 2
+        if i.date_bcg1 and not i.date_bcg2:
+            i.bcg = 1
+        if i.date_bcg2 and not i.date_bcg1:
+            i.bcg = 1
+        if not i.date_bcg1 and not i.date_bcg2:
+            i.bcg = 0
+
+        if i.date_penta1 and i.date_penta2 and i.date_penta3:
+            i.penta = 3
+        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+            i.penta = 0
+        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+            i.penta = 2
+        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+            i.penta = 2
+        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+            i.penta = 2
+        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+            i.penta = 1
+        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+            i.penta = 1
+        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+            i.penta = 1
+
+        if i.date_opv1 and i.date_opv2 and i.date_opv3:
+            i.opv = 3
+        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+            i.opv = 0
+        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+            i.opv = 2
+        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+            i.opv = 2
+        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+            i.opv = 2
+        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+            i.opv = 1
+        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+            i.opv = 1
+        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+            i.opv = 1
+
+        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+            i.pcv = 3
+        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+            i.pcv = 0
+        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+            i.pcv = 2
+        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+            i.pcv = 2
+        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+            i.pcv = 2
+        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+            i.pcv = 1
+        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+            i.pcv = 1
+        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+            i.pcv = 1
+
+        if i.date_ipv1 and i.date_ipv2:
+            i.ipv = 2
+        if i.date_ipv1 and not i.date_ipv2:
+            i.ipv = 1
+        if i.date_ipv2 and not i.date_ipv1:
+            i.ipv = 1
+        if not i.date_ipv1 and not i.date_ipv2:
+            i.ipv = 0
+
+        if i.date_mr1 and i.date_mr2:
+            i.mr = 2
+        if i.date_mr1 and not i.date_mr2:
+            i.mr = 1
+        if i.date_mr2 and not i.date_mr1:
+            i.mr = 1
+        if not i.date_mr1 and not i.date_mr2:
+            i.mr = 0
+        i.save()
+
     context = {
         'user': user,
         'my_area_users': my_area_users,
         'reports': reports,
         'id': id,
+        'v2': v2,
     }
     return render(request,'user/ha_profile.html',context)
 
