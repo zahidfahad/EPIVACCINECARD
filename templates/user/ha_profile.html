@@ -93,6 +93,7 @@
                                     <th>পিসিভি</th>
                                     <th>আইপিভি</th>
                                     <th>এমআর</th>
+                                    <th><i class="fa fa-arrow-down"></i></th>
                                 </thead>
                                 <tbody>
                                     {% for i in v2 %}
@@ -123,6 +124,9 @@
 
                                         <td>
                                             {{ i.mr }}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'pdf_property_ha' i.id %}">Download</a>
                                         </td>
                                     </tr>
                                     {% endfor %}

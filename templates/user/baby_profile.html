@@ -16,6 +16,14 @@
     input {
         height: 50px!important;
     }
+    
+    .background {
+        background-color: rgb(171, 118, 221);
+        color: white;
+        padding: 10px;
+        font-size: 12px;
+        font-family: lobster;
+    }
 </style>
 
 
@@ -58,45 +66,45 @@
                     </ul>
                     <div class="card-body" id="showdetail">
                         <table class="table table-stripped table-hover">
-                                <thead>
-                                    <th>বিসিজি</th>
-                                    <th>পেন্টা</th>
-                                    <th>ওপিভি</th>
-                                    <th>পিসিভি</th>
-                                    <th>আইপিভি</th>
-                                    <th>এমআর</th>
-                                </thead>
-                                <tbody>
-                                    {% for i in v2 %}
-                                    <tr>
-                                        
-                                        <td>
-                                            {{ i.bcg }}
-                                        </td>
+                            <thead>
+                                <th>বিসিজি</th>
+                                <th>পেন্টা</th>
+                                <th>ওপিভি</th>
+                                <th>পিসিভি</th>
+                                <th>আইপিভি</th>
+                                <th>এমআর</th>
+                            </thead>
+                            <tbody>
+                                {% for i in v2 %}
+                                <tr>
 
-                                        <td>
-                                            {{ i.penta }}
-                                        </td>
+                                    <td>
+                                        {{ i.bcg }}
+                                    </td>
 
-                                        <td>
-                                            {{ i.opv }}
-                                        </td>
+                                    <td>
+                                        {{ i.penta }}
+                                    </td>
 
-                                        <td>
-                                            {{ i.pcv }}
-                                        </td>
+                                    <td>
+                                        {{ i.opv }}
+                                    </td>
 
-                                        <td>
-                                            {{ i.ipv }}
-                                        </td>
+                                    <td>
+                                        {{ i.pcv }}
+                                    </td>
 
-                                        <td>
-                                            {{ i.mr }}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                    <td>
+                                        {{ i.ipv }}
+                                    </td>
+
+                                    <td>
+                                        {{ i.mr }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -387,10 +395,82 @@
             </div>
         </div>
 
-        <input class="btn btn-danger" type="button" id="btnd" value="Print">
-        {% if data2 is not None %}
-            <a class="btn btn-danger" href="{% url 'pdf_property' data2.id %}">Download</a>
-        {% endif %}
+        <input class="btn btn-danger" type="button" id="btnd" value="Print"> {% if data2 is not None %}
+        <a class="btn btn-danger" href="{% url 'pdf_property' data2.id %}">Download</a> {% endif %}
+
+        <div class="row gutters-sm mt-5 shadow p-3 mb-5 bg-white rounded">
+            <div class="col-md-12">
+                <div style="border: 1px solid;" class="text-center background">
+                    ইপিআই কর্মসূচিকে শিদের টিকা দিয়ে প্রতিরোধযােগ্য রােগ সমূহ ।
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="border: 1px solid;" class="text-center background">
+                    ১। আখি
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="border: 1px solid;" class="text-center background">
+                    ২। পােলিও ৩। ডিফথেরিয়া
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৩। ডিফথেরিয়া
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৪। হুপিং কাশি
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৫। ধনুষ্টংকার
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৬। হেপাটাইটিস-বি
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৭। হিমােফাইলাস ইনফ্লুয়েঞ্জা-বি জনিত রােগ
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৮। হাম
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div style="border: 1px solid;" class="text-center background">
+                    ৯। নিউমােকক্কাল জনিত নিউমােনিয়া।
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="border: 1px solid;" class="text-center background">
+                    ১০। শ্রীব
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-10">
+                ১। সময়সূচি অনুযায়ী সবগুলাে টিকা নিলে আপনার শিশু উপরে বর্ণিত মারাত্মক সংক্রামক রোগসমূহ হতে রক্ষা পাবে। <br> ২। সময়সূচি অনুযায়ী টিকা না নিলে আপনার শিশুর মারাত্মক সংক্রামক রােগসমূহের বিরুদ্ধে রােগ প্রতিরােধ ক্ষমতা তৈরি হবে না। <br> ৩।
+                বিসিজি টিকার নির্দিষ্ট ডোজটি জনের পর পরই দেয়া যায় । টিকা দেয়ার পর বিসিজি টিকার স্থানে (বাম বাহুতে) স্বাভাবিকভাবে যা হৰে এতে ভয়ের কিছু নাই । <br> ৪। শিশুকে আইপিভি টিকার দুই ডােজ টিকাঃ ১ম ডােজ ৬ সপ্তাহ/৪২ দিন হলে, ২য় ডোজ ১৪ সপ্তাহ বয়সে
+                দিতে হবে। <br> ৫। শিশুর বয়স ৬ সপ্তাহ/৪২ দিন হলেই পেন্টাভ্যালেন্ট (ডিপিটি, হেপাটাইটিস-বি, হিব), ওপিভি এবং পিসিভি টিকার ১ম ডোজ দিতে হবে। তারপর কমপক্ষে ৪ সপ্তাহ/২৮ দিনের ব্যবধানে এ সকল টিকার ২য় এবং ৩য় ডোজ নিতে হবে। <br> ৬। ১০ মাসে পড়লেই/২৭০
+                দিন পূর্ণ হলেই শিশুকে ১ম ডোজ এবং ১৫ মাস বয়স পূর্ণ হলেই ২য় ডােজ এমআর (হাম ও রুবেলা) টিকা দিতে হবে। <br> ৭। অসুস্থ শিশুকে সাময়িকভাবে টিকা দেয়া যাবে না। তবে শিশু সুস্থ হওয়ার সাথে সাথে টিকা দিতে হবে এবং সময়সূচি অনুযায়ী সকল টিকা নেয়া
+                শেষ করতে হবে। <br> ৮। টিকা দিলে সামান্য জ্বর, টিকার স্থানে ব্যথা এবং সাময়িকভাবে টিকা দেয়ার স্থান শক্ত হয়ে যেতে পারে, এতে ভয়ের কিছু নাই ।
+            </div>
+        </div>
+
     </div>
 </div>
 

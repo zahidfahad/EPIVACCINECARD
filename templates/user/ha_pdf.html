@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Pdf</title>
+    <style>
+        th {
+            font-size: 15px;
+        }
+        
+        td {
+            font-size: 10px;
+        }
+        
+        .color {
+            background-color: rgb(67, 114, 185);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <table border="1" cellspacing="5" cellpadding="5">
+            <thead>
+                <tr>
+                    <th class="color">BCG</th>
+                    <th class="color">Penta</th>
+                    <th class="color" style="font-size: 13px;">OPV</th>
+                    <th class="color">PCV</th>
+                    <th class="color">IPV</th>
+                    <th class="color">MR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ v2.bcg }} </td>
+                    <td>{{ v2.penta }}</td>
+                    <td>{{ v2.opv }}</td>
+                    <td>{{ v2.pcv }}</td>
+                    <td>{{ v2.ipv }}</td>
+                    <td>{{ v2.mr }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <div id="thanks" style="color: brown;">Thank you!</div>
+    </main>
+    <footer id="thanks" style="color: red;">
+        pdf was created on a computer and is valid without the signature and seal.
+    </footer>
+</body>
+
+</html>

@@ -31,3 +31,27 @@ def pdf_property(request,id):
         response['Content-Disposition']=content
         return response
     return HttpResponse("not found")
+
+
+def render_to_pdf_ha(template,context):
+    html = template.render(context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(),content_type="application/pdf")
+
+
+def pdf_property_ha(request,id):
+    v2 = VaccineCard2.objects.get(id=id)
+    context = {
+        'v2': v2,
+        'id':id
+    }
+    template = get_template('user/ha_pdf.html')
+    pdf = render_to_pdf_ha(template, context)
+    if pdf:
+        response = HttpResponse(pdf, content_type="application/pdf")
+        content = "inline; filename=card.pdf"
+        response['Content-Disposition']=content
+        return response
+    return HttpResponse("not found")

@@ -36,8 +36,11 @@
     <!--begin::Header Mobile-->
     <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
         <!--begin::Logo-->
-        <a href="index.html">
-            <img alt="Logo" src="{% static 'assets/media/logos/logo-letter-1.png' %}" class="logo-default max-h-30px" />
+        <a href="{% url 'visit_profile' request.user.id %}">
+            My Profile
+        </a>
+        <a href="{% url 'logout' %}">
+            Sign Out
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
