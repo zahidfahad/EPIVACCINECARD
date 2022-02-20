@@ -13,9 +13,9 @@
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
-       <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <!--begin::Page Vendors Styles(used by this page)-->
     <link href="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
     <!--end::Page Vendors Styles-->
@@ -44,7 +44,7 @@
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
-       
+
         <!--end::Toolbar-->
     </div>
     <!--end::Header Mobile-->
@@ -52,7 +52,7 @@
         <!--begin::Page-->
         <div class="d-flex flex-row flex-column-fluid page">
             <!--begin::Aside-->
-           
+
             <!--end::Aside-->
             <!--begin::Wrapper-->
             <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
@@ -62,7 +62,7 @@
                     <div class="container d-flex align-items-stretch justify-content-between">
                         <!--begin::Left-->
                         <div class="d-none d-lg-flex align-items-center mr-3">
-                           
+
                             <!--begin::Logo-->
                             <a href="/">
                                 <img alt="Logo" src="{% static 'logo.jfif' %}" class="logo-sticky max-h-35px" />
@@ -169,9 +169,9 @@
                             </div>
                             <!--end::Tablet & Mobile Search-->
                             <!--begin::Create-->
-                           
+
                             <!--end::Create-->
-                            
+
                             <!--end::Quick panel-->
                             <!--begin::User-->
                             <div class="topbar-item mr-4">
@@ -191,7 +191,7 @@
                             </div>
                             <!--end::User-->
                             <!--begin::Notifications-->
-                           
+
                             <!--end::Notifications-->
                         </div>
                         <!--end::Topbar-->
@@ -216,7 +216,7 @@
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark order-1 order-md-2">
-                            <a href=""  class="nav-link pr-3 pl-0">About</a>
+                            <a href="" class="nav-link pr-3 pl-0">About</a>
                             <a href="" target="_blank" class="nav-link px-3">Team</a>
                             <a href="" target="_blank" class="nav-link pl-3 pr-0">Contact</a>
                         </div>
@@ -232,17 +232,17 @@
     </div>
     <!--end::Main-->
     <!-- begin::Notifications Panel-->
-   
+
     <!--end::Quick Actions Panel-->
     <!-- begin::User Panel-->
     <div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
         <!--begin::Header-->
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
             <h3 class="font-weight-bold m-0">User Profile
-               
-            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
-                <i class="ki ki-close icon-xs text-muted"></i>
-            </a>
+
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
+                    <i class="ki ki-close icon-xs text-muted"></i>
+                </a>
         </div>
         <!--end::Header-->
         <!--begin::Content-->
@@ -255,7 +255,11 @@
                 </div>
                 <div class="d-flex flex-column">
                     <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ request.user.first_name|title }} {{ request.user.last_name|title }}</a>
-                    <div class="text-muted mt-1">Application Developer</div>
+                    <div class="text-muted mt-1">{% if request.user.is_superuser %}
+                        <h6>Admin {% elif request.user.is_baby %} Baby {% elif request.user.is_ha %} Health Assistant {% endif %}
+                        </h6>
+
+                    </div>
                     <div class="navi mt-2">
                         <a href="#" class="navi-item">
                             <span class="navi-link p-0 pb-2">
@@ -311,19 +315,19 @@
                     </div>
                 </a>
                 <!--end:Item-->
-                
+
             </div>
-          
+
             <!--end::Notifications-->
         </div>
         <!--end::Content-->
     </div>
     <!-- end::User Panel-->
     <!--begin::Quick Panel-->
-    
+
     <!--end::Quick Panel-->
     <!--begin::Chat Panel-->
-   
+
     <!--end::Chat Panel-->
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop">
@@ -417,12 +421,12 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="{% static 'assets/js/pages/widgets.js' %}"></script>
     <!--end::Page Scripts-->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" integrity="sha512-YcsIPGdhPK4P/uRW6/sruonlYj+Q7UHWeKfTAkBW+g83NKM+jMJFJ4iAPfSnVp7BKD4dKMHmVSvICUbE/V1sSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" integrity="sha512-YcsIPGdhPK4P/uRW6/sruonlYj+Q7UHWeKfTAkBW+g83NKM+jMJFJ4iAPfSnVp7BKD4dKMHmVSvICUbE/V1sSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tags').keydown(function(event) {
@@ -434,7 +438,7 @@
         });
     </script>
 
- <script>
+    <script>
         $("#tags").autocomplete({
             source: "{% url 'autocomplete' %}",
             select: function(event, ui) {

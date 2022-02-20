@@ -5,7 +5,7 @@ from django.contrib.auth import views
 from .decorators import forbidden
 
 urlpatterns = [
-    path('accounts/login/', views.LoginView.as_view(), name='login'),
+    path('accounts/login/', login_view , name='login_view'),
     path('accounts/logout/', views.LogoutView.as_view(next_page='/'), name='logout'),
 
     path('', dashboard, name = 'dashboard'),

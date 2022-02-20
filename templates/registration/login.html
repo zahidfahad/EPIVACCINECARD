@@ -23,10 +23,158 @@
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
-        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
+
+<!-- loader -->
+
+<style>
+    #loading-wrapper {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+    
+    #loading-text {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        color: #999;
+        width: 100px;
+        height: 30px;
+        margin: -7px 0 0 -45px;
+        text-align: center;
+        font-family: 'PT Sans Narrow', sans-serif;
+        font-size: 20px;
+    }
+    
+    #loading-content {
+        display: block;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        width: 170px;
+        height: 170px;
+        margin: -85px 0 0 -85px;
+        border: 3px solid #F00;
+    }
+    
+    #loading-content:after {
+        content: "";
+        position: absolute;
+        border: 3px solid #0F0;
+        left: 15px;
+        right: 15px;
+        top: 15px;
+        bottom: 15px;
+    }
+    
+    #loading-content:before {
+        content: "";
+        position: absolute;
+        border: 3px solid #00F;
+        left: 5px;
+        right: 5px;
+        top: 5px;
+        bottom: 5px;
+    }
+    
+    #loading-content {
+        border: 3px solid transparent;
+        border-top-color: #4D658D;
+        border-bottom-color: #4D658D;
+        border-radius: 50%;
+        -webkit-animation: loader 2s linear infinite;
+        -moz-animation: loader 2s linear infinite;
+        -o-animation: loader 2s linear infinite;
+        animation: loader 2s linear infinite;
+    }
+    
+    #loading-content:before {
+        border: 3px solid transparent;
+        border-top-color: #D4CC6A;
+        border-bottom-color: #D4CC6A;
+        border-radius: 50%;
+        -webkit-animation: loader 3s linear infinite;
+        -moz-animation: loader 2s linear infinite;
+        -o-animation: loader 2s linear infinite;
+        animation: loader 3s linear infinite;
+    }
+    
+    #loading-content:after {
+        border: 3px solid transparent;
+        border-top-color: #84417C;
+        border-bottom-color: #84417C;
+        border-radius: 50%;
+        -webkit-animation: loader 1.5s linear infinite;
+        animation: loader 1.5s linear infinite;
+        -moz-animation: loader 2s linear infinite;
+        -o-animation: loader 2s linear infinite;
+    }
+    
+    @-webkit-keyframes loaders {
+        0% {
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    
+    @keyframes loader {
+        0% {
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    
+    #content-wrapper {
+        color: #FFF;
+        position: fixed;
+        left: 0;
+        top: 20px;
+        width: 100%;
+        height: 100%;
+    }
+    
+    #header {
+        width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        height: 100px;
+        background-color: #666;
+    }
+    
+    #content {
+        width: 800px;
+        height: 1000px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: #888;
+    }
+</style>
+
+
+<div id="loading-wrapper" style="display: none;">
+    <div id="loading-text">LOADING</div>
+    <div id="loading-content"></div>
+</div>
+
 
 <body id="kt_body" class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading">
     <!--begin::Main-->
@@ -55,15 +203,16 @@
             <!--begin::Content-->
             <div class="login-content flex-row-fluid d-flex flex-column p-10">
                 <!--begin::Top-->
-                
+
                 <!--end::Top-->
                 <!--begin::Wrapper-->
                 <div class="d-flex flex-row-fluid flex-center">
                     <!--begin::Signin-->
                     <div class="login-form">
                         <!--begin::Form-->
-                        <form method="POST" class="form" action="{% url 'login' %}">
+                        <form id="loginForm">
                             {% csrf_token %}
+
                             <!--begin::Title-->
                             <div class="pb-5 pb-lg-15">
                                 <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Sign In</h3>
@@ -71,20 +220,24 @@
                                     <a href="{% url 'register' %}" class="text-primary font-weight-bolder">Create Account</a></div>
                             </div>
                             <!--begin::Title-->
+
                             <!--begin::Form group-->
                             <div class="form-group">
-                                {{ form.errors }}
+                                <div class="cred-msg">
+
+                                </div>
                                 <label class="font-size-h6 font-weight-bolder text-dark">Your Mobile Number</label>
-                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="text" name="username" autocomplete="off" />
+                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="text" name="username" id="username" value="+88" autocomplete="off" />
                             </div>
                             <!--end::Form group-->
+
                             <!--begin::Form group-->
                             <div class="form-group">
                                 <div class="d-flex justify-content-between mt-n5">
                                     <label class="font-size-h6 font-weight-bolder text-dark pt-5">Your Password</label>
                                     <a href="{% url 'forgot_password_number' %}" class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5">Forgot Password ?</a>
                                 </div>
-                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" autocomplete="off" />
+                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" id="pass" autocomplete="off" />
                             </div>
                             <!--end::Form group-->
                             <!--begin::Action-->
@@ -104,9 +257,9 @@
         <!--end::Login-->
     </div>
     <!--end::Main-->
-    <script>
+    <!-- <script>
         var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
-    </script>
+    </script> -->
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>
         var KTAppSettings = {
@@ -170,6 +323,7 @@
     </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
     <script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
     <script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
@@ -177,6 +331,66 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="{% static 'assets/js/pages/custom/login/login-3.js' %}"></script>
     <!--end::Page Scripts-->
+
+
+    <script>
+        $("#loginForm").submit(function(event) {
+            event.preventDefault();
+
+            var username = $('#username').val();
+            var password = $('#pass').val();
+
+            if (!username) {
+                $('#username').focus();
+            } else if (!password) {
+                $('#pass').focus();
+            }
+
+            if (username !== '' && password !== '') {
+                var backend_data = {
+                    'username': username,
+                    'password': password
+                }
+
+                $('#loading-wrapper').css("display", "block");
+
+                $.ajax({
+                    url: '/accounts/login/',
+                    method: 'POST',
+                    data: backend_data,
+                    success: function(response) {
+                        if (response.match === false) {
+                            $('#loading-wrapper').css("display", "none");
+                            $('.cred-msg').empty();
+                            $('.cred-msg').append(
+                                `
+                            <div class="alert alert-danger" role="alert">
+                                ${response.msg}
+                            </div>
+                            `
+                            )
+                        } else {
+                            $('.cred-msg').empty();
+                            $('.cred-msg').append(
+                                `
+                            <div class="alert alert-success" role="alert">
+                                ${response.msg}
+                            </div>
+                            `
+                            );
+
+                            $('#loading-wrapper').css("display", "block");
+                            setTimeout(
+                                function() {
+                                    window.location.href = window.location.origin;
+                                }, 4000);
+                        }
+                    }
+                })
+            }
+        });
+    </script>
+
 </body>
 <!--end::Body-->
 

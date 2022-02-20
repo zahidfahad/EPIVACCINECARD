@@ -64,6 +64,26 @@ def dashboard(request):
     elif request.user.is_baby:
         return redirect('baby_profile',id = request.user.id)
 
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username = username, password = password)
+        if user is not None:
+            login(request, user)
+            response = {
+                'match': True,
+                'msg': 'Login Successful. Redirecting You to the next page....'
+            }
+        else:
+            response = {
+                'match': False,
+                'msg': 'This number or password is wrong. please try again.'
+            }
+        return JsonResponse(response,safe=False)
+    return render(request,'registration/login.html')
 
 def register(request):
     form = UserCreation()
@@ -175,389 +195,391 @@ def admin_profile(request,id):
 
 @login_required
 def baby_profile(request,id):
-    data = None
-    user = User.objects.filter(id = id, is_baby = True)
-    details = User.objects.get(id = id, is_baby = True)
-    my_health_assistant = BabyAttachedToHealthAssistant.objects.filter(
-        baby_id = id, ha__divisions = details.divisions,
-        ha__zilla = details.zilla,ha__word_no = details.word_no)
-    try:
-        report_to = BabyAttachedToHealthAssistant.objects.get(baby_id = id, ha__divisions = details.divisions,
-                                                      ha__zilla = details.zilla,ha__word_no = details.word_no)
-    except:
-        report_to = None
-
-    vaccinecard1 = VaccineCard1.objects.filter(to_user_id = id)
-    for i in vaccinecard1:
+    if request.user.id == id or request.user.is_ha or request.user.is_baby:
+        data = None
+        user = User.objects.filter(id = id, is_baby = True)
+        details = User.objects.get(id = id, is_baby = True)
+        my_health_assistant = BabyAttachedToHealthAssistant.objects.filter(
+            baby_id = id, ha__divisions = details.divisions,
+            ha__zilla = details.zilla,ha__word_no = details.word_no)
         try:
-            data = VaccineCard1.objects.get(id = i.id)
+            report_to = BabyAttachedToHealthAssistant.objects.get(baby_id = id, ha__divisions = details.divisions,
+                                                        ha__zilla = details.zilla,ha__word_no = details.word_no)
         except:
-            data = None
+            report_to = None
 
-    try:
-        data2 = VaccineCard2.objects.get(to_user_id = id)
-    except:
-        data2 = None
+        vaccinecard1 = VaccineCard1.objects.filter(to_user_id = id)
+        for i in vaccinecard1:
+            try:
+                data = VaccineCard1.objects.get(id = i.id)
+            except:
+                data = None
 
-    v2 = VaccineCard2.objects.filter(to_user_id = id )
-    for i in v2:
-        if i.date_bcg1 and i.date_bcg2:
-            i.bcg = 2
-        if i.date_bcg1 and not i.date_bcg2:
-            i.bcg = 1
-        if i.date_bcg2 and not i.date_bcg1:
-            i.bcg = 1
-        if not i.date_bcg1 and not i.date_bcg2:
-            i.bcg = 0
-
-        if i.date_penta1 and i.date_penta2 and i.date_penta3:
-            i.penta = 3
-        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
-            i.penta = 0
-        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
-            i.penta = 2
-        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
-            i.penta = 2
-        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
-            i.penta = 2
-        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
-            i.penta = 1
-        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
-            i.penta = 1
-        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
-            i.penta = 1
-
-        if i.date_opv1 and i.date_opv2 and i.date_opv3:
-            i.opv = 3
-        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
-            i.opv = 0
-        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
-            i.opv = 2
-        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
-            i.opv = 2
-        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
-            i.opv = 2
-        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
-            i.opv = 1
-        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
-            i.opv = 1
-        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
-            i.opv = 1
-
-        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
-            i.pcv = 3
-        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
-            i.pcv = 0
-        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
-            i.pcv = 2
-        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
-            i.pcv = 2
-        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
-            i.pcv = 2
-        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
-            i.pcv = 1
-        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
-            i.pcv = 1
-        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
-            i.pcv = 1
-
-        if i.date_ipv1 and i.date_ipv2:
-            i.ipv = 2
-        if i.date_ipv1 and not i.date_ipv2:
-            i.ipv = 1
-        if i.date_ipv2 and not i.date_ipv1:
-            i.ipv = 1
-        if not i.date_ipv1 and not i.date_ipv2:
-            i.ipv = 0
-
-        if i.date_mr1 and i.date_mr2:
-            i.mr = 2
-        if i.date_mr1 and not i.date_mr2:
-            i.mr = 1
-        if i.date_mr2 and not i.date_mr1:
-            i.mr = 1
-        if not i.date_mr1 and not i.date_mr2:
-            i.mr = 0
-        i.save()
-        
-    form = VaccineForm1(instance = data)
-    if request.method == 'POST':
         try:
-            attached_ha = BabyAttachedToHealthAssistant.objects.get(baby_id = id)
+            data2 = VaccineCard2.objects.get(to_user_id = id)
         except:
-            return HttpResponse('This baby has no health assistant and you can not edit this profile')
+            data2 = None
 
-        checked1 = request.POST.get('checked1')
-        checked = request.POST.get('checked')
+        v2 = VaccineCard2.objects.filter(to_user_id = id )
+        for i in v2:
+            if i.date_bcg1 and i.date_bcg2:
+                i.bcg = 2
+            if i.date_bcg1 and not i.date_bcg2:
+                i.bcg = 1
+            if i.date_bcg2 and not i.date_bcg1:
+                i.bcg = 1
+            if not i.date_bcg1 and not i.date_bcg2:
+                i.bcg = 0
 
-        if checked1 is not None:
-            if request.user.id == report_to.ha.id or request.user.is_superuser:
-                form = VaccineForm1(request.POST,instance = data)
-                if form.is_valid():
-                    instance = form.save(commit=False)
-                    instance.to_user = User.objects.get(id = id)
-                    instance.by_user = request.user
-                    instance.save()
-                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            else:
-                return HttpResponse('Not Allowed')
+            if i.date_penta1 and i.date_penta2 and i.date_penta3:
+                i.penta = 3
+            if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                i.penta = 0
+            if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+                i.penta = 2
+            if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+                i.penta = 2
+            if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+                i.penta = 2
+            if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+                i.penta = 1
+            if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+                i.penta = 1
+            if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                i.penta = 1
 
+            if i.date_opv1 and i.date_opv2 and i.date_opv3:
+                i.opv = 3
+            if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                i.opv = 0
+            if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+                i.opv = 2
+            if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+                i.opv = 2
+            if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+                i.opv = 2
+            if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+                i.opv = 1
+            if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+                i.opv = 1
+            if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                i.opv = 1
 
-        if checked is not None:
-            date_bcg1 = request.POST.get('date_bcg1')
-            date_bcg2 = request.POST.get('date_bcg2')
+            if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+                i.pcv = 3
+            if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                i.pcv = 0
+            if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+                i.pcv = 2
+            if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+                i.pcv = 2
+            if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+                i.pcv = 2
+            if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+                i.pcv = 1
+            if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+                i.pcv = 1
+            if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                i.pcv = 1
+
+            if i.date_ipv1 and i.date_ipv2:
+                i.ipv = 2
+            if i.date_ipv1 and not i.date_ipv2:
+                i.ipv = 1
+            if i.date_ipv2 and not i.date_ipv1:
+                i.ipv = 1
+            if not i.date_ipv1 and not i.date_ipv2:
+                i.ipv = 0
+
+            if i.date_mr1 and i.date_mr2:
+                i.mr = 2
+            if i.date_mr1 and not i.date_mr2:
+                i.mr = 1
+            if i.date_mr2 and not i.date_mr1:
+                i.mr = 1
+            if not i.date_mr1 and not i.date_mr2:
+                i.mr = 0
+            i.save()
             
-            date_penta1 = request.POST.get('date_penta1')
-            date_penta2 = request.POST.get('date_penta2')
-            date_penta3 = request.POST.get('date_penta3')
+        form = VaccineForm1(instance = data)
+        if request.method == 'POST':
+            try:
+                attached_ha = BabyAttachedToHealthAssistant.objects.get(baby_id = id)
+            except:
+                return HttpResponse('This baby has no health assistant and you can not edit this profile')
 
-            date_opv1 = request.POST.get('date_opv1')
-            date_opv2 = request.POST.get('date_opv2')
-            date_opv3 = request.POST.get('date_opv3')
+            checked1 = request.POST.get('checked1')
+            checked = request.POST.get('checked')
 
-            date_pcv1 = request.POST.get('date_pcv1')
-            date_pcv2 = request.POST.get('date_pcv2')
-            date_pcv3 = request.POST.get('date_pcv3')
-
-            date_ipv1 = request.POST.get('date_ipv1')
-            date_ipv2 = request.POST.get('date_ipv2')
-
-            date_mr1 = request.POST.get('date_mr1')
-            date_mr2 = request.POST.get('date_mr2')
-
-            # checking permission
-            if request.user.id == report_to.ha.id or request.user.is_superuser:
-                if data2 is not None:
-                    # to update existing
-                    VaccineCard2.objects.filter(id = data2.id).update(
-                                                                    by_user = request.user,
-                                                                    to_user_id = id,
-                                                                    date_bcg1 = date_bcg1,
-                                                                    date_bcg2 = date_bcg2,
-                                                                    date_penta1 = date_penta1,
-                                                                    date_penta2 = date_penta2,
-                                                                    date_penta3 = date_penta3,
-                                                                    date_opv1 = date_opv1,
-                                                                    date_opv2 = date_opv2,
-                                                                    date_opv3 = date_opv3,
-                                                                    date_pcv1 = date_pcv1,
-                                                                    date_pcv2 = date_pcv2,
-                                                                    date_pcv3 = date_pcv3,
-                                                                    date_ipv1 = date_ipv1,
-                                                                    date_ipv2 = date_ipv2,
-                                                                    date_mr1 = date_mr1,
-                                                                    date_mr2 = date_mr2,
-                    
-                                                                )
-                                                                
-                    v2 = VaccineCard2.objects.filter(to_user_id = id )
-                    for i in v2:
-                        if i.date_bcg1 and i.date_bcg2:
-                            i.bcg = 2
-                        if i.date_bcg1 and not i.date_bcg2:
-                            i.bcg = 1
-                        if i.date_bcg2 and not i.date_bcg1:
-                            i.bcg = 1
-                        if not i.date_bcg1 and not i.date_bcg2:
-                            i.bcg = 0
-
-                        if i.date_penta1 and i.date_penta2 and i.date_penta3:
-                            i.penta = 3
-                        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
-                            i.penta = 0
-                        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
-                            i.penta = 2
-                        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
-                            i.penta = 2
-                        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
-                            i.penta = 2
-                        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
-                            i.penta = 1
-                        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
-                            i.penta = 1
-                        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
-                            i.penta = 1
-
-                        if i.date_opv1 and i.date_opv2 and i.date_opv3:
-                            i.opv = 3
-                        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
-                            i.opv = 0
-                        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
-                            i.opv = 2
-                        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
-                            i.opv = 2
-                        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
-                            i.opv = 2
-                        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
-                            i.opv = 1
-                        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
-                            i.opv = 1
-                        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
-                            i.opv = 1
-
-                        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
-                            i.pcv = 3
-                        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
-                            i.pcv = 0
-                        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
-                            i.pcv = 2
-                        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
-                            i.pcv = 2
-                        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
-                            i.pcv = 2
-                        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
-                            i.pcv = 1
-                        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
-                            i.pcv = 1
-                        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
-                            i.pcv = 1
-
-                        if i.date_ipv1 and i.date_ipv2:
-                            i.ipv = 2
-                        if i.date_ipv1 and not i.date_ipv2:
-                            i.ipv = 1
-                        if i.date_ipv2 and not i.date_ipv1:
-                            i.ipv = 1
-                        if not i.date_ipv1 and not i.date_ipv2:
-                            i.ipv = 0
-
-                        if i.date_mr1 and i.date_mr2:
-                            i.mr = 2
-                        if i.date_mr1 and not i.date_mr2:
-                            i.mr = 1
-                        if i.date_mr2 and not i.date_mr1:
-                            i.mr = 1
-                        if not i.date_mr1 and not i.date_mr2:
-                            i.mr = 0
-                        i.save()
-                    try:
-                        data2 = VaccineCard2.objects.get(to_user_id = id)
-                    except:
-                        data2 = None
-                    
-                # to create
+            if checked1 is not None:
+                if request.user.id == report_to.ha.id or request.user.is_superuser:
+                    form = VaccineForm1(request.POST,instance = data)
+                    if form.is_valid():
+                        instance = form.save(commit=False)
+                        instance.to_user = User.objects.get(id = id)
+                        instance.by_user = request.user
+                        instance.save()
+                        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
                 else:
-                    VaccineCard2.objects.create(
-                        by_user = request.user,
-                        to_user_id = id,
-                        date_bcg1 = date_bcg1,
-                        date_bcg2 = date_bcg2,
-                        date_penta1 = date_penta1,
-                        date_penta2 = date_penta2,
-                        date_penta3 = date_penta3,
-                        date_opv1 = date_opv1,
-                        date_opv2 = date_opv2,
-                        date_opv3 = date_opv3,
-                        date_pcv1 = date_pcv1,
-                        date_pcv2 = date_pcv2,
-                        date_pcv3 = date_pcv3,
-                        date_ipv1 = date_ipv1,
-                        date_ipv2 = date_ipv2,
-                        date_mr1 = date_mr1,
-                        date_mr2 = date_mr2,
-                    )
+                    return HttpResponse('Not Allowed')
 
-                    v2 = VaccineCard2.objects.filter(to_user_id = id )
-                    for i in v2:
-                        if i.date_bcg1 and i.date_bcg2:
-                            i.bcg = 2
-                        if i.date_bcg1 and not i.date_bcg2:
-                            i.bcg = 1
-                        if i.date_bcg2 and not i.date_bcg1:
-                            i.bcg = 1
-                        if not i.date_bcg1 and not i.date_bcg2:
-                            i.bcg = 0
 
-                        if i.date_penta1 and i.date_penta2 and i.date_penta3:
-                            i.penta = 3
-                        if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
-                            i.penta = 0
-                        if i.date_penta1 and i.date_penta2 and not i.date_penta3:
-                            i.penta = 2
-                        if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
-                            i.penta = 2
-                        if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
-                            i.penta = 2
-                        if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
-                            i.penta = 1
-                        if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
-                            i.penta = 1
-                        if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
-                            i.penta = 1
-
-                        if i.date_opv1 and i.date_opv2 and i.date_opv3:
-                            i.opv = 3
-                        if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
-                            i.opv = 0
-                        if i.date_opv1 and i.date_opv2 and not i.date_opv3:
-                            i.opv = 2
-                        if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
-                            i.opv = 2
-                        if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
-                            i.opv = 2
-                        if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
-                            i.opv = 1
-                        if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
-                            i.opv = 1
-                        if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
-                            i.opv = 1
-
-                        if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
-                            i.pcv = 3
-                        if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
-                            i.pcv = 0
-                        if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
-                            i.pcv = 2
-                        if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
-                            i.pcv = 2
-                        if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
-                            i.pcv = 2
-                        if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
-                            i.pcv = 1
-                        if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
-                            i.pcv = 1
-                        if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
-                            i.pcv = 1
-
-                        if i.date_ipv1 and i.date_ipv2:
-                            i.ipv = 2
-                        if i.date_ipv1 and not i.date_ipv2:
-                            i.ipv = 1
-                        if i.date_ipv2 and not i.date_ipv1:
-                            i.ipv = 1
-                        if not i.date_ipv1 and not i.date_ipv2:
-                            i.ipv = 0
-
-                        if i.date_mr1 and i.date_mr2:
-                            i.mr = 2
-                        if i.date_mr1 and not i.date_mr2:
-                            i.mr = 1
-                        if i.date_mr2 and not i.date_mr1:
-                            i.mr = 1
-                        if not i.date_mr1 and not i.date_mr2:
-                            i.mr = 0
-                        i.save()
+            if checked is not None:
+                date_bcg1 = request.POST.get('date_bcg1')
+                date_bcg2 = request.POST.get('date_bcg2')
                 
-            else:
-                return HttpResponse('Not Allowed')
-                
-    try:
-        data2 = VaccineCard2.objects.get(to_user_id = id)
-    except:
-        data2 = None
-        
-    context = {
-        'data2': data2,
-        'user': user,
-        'details': details,
-        'my_health_assistant': my_health_assistant,
-        'report_to': report_to,
-        'form': form,
-        'id': id,
-        'v2': v2,
-    }
-    return render(request,'user/baby_profile.html',context)
+                date_penta1 = request.POST.get('date_penta1')
+                date_penta2 = request.POST.get('date_penta2')
+                date_penta3 = request.POST.get('date_penta3')
 
+                date_opv1 = request.POST.get('date_opv1')
+                date_opv2 = request.POST.get('date_opv2')
+                date_opv3 = request.POST.get('date_opv3')
+
+                date_pcv1 = request.POST.get('date_pcv1')
+                date_pcv2 = request.POST.get('date_pcv2')
+                date_pcv3 = request.POST.get('date_pcv3')
+
+                date_ipv1 = request.POST.get('date_ipv1')
+                date_ipv2 = request.POST.get('date_ipv2')
+
+                date_mr1 = request.POST.get('date_mr1')
+                date_mr2 = request.POST.get('date_mr2')
+
+                # checking permission
+                if request.user.id == report_to.ha.id or request.user.is_superuser:
+                    if data2 is not None:
+                        # to update existing
+                        VaccineCard2.objects.filter(id = data2.id).update(
+                                                                        by_user = request.user,
+                                                                        to_user_id = id,
+                                                                        date_bcg1 = date_bcg1,
+                                                                        date_bcg2 = date_bcg2,
+                                                                        date_penta1 = date_penta1,
+                                                                        date_penta2 = date_penta2,
+                                                                        date_penta3 = date_penta3,
+                                                                        date_opv1 = date_opv1,
+                                                                        date_opv2 = date_opv2,
+                                                                        date_opv3 = date_opv3,
+                                                                        date_pcv1 = date_pcv1,
+                                                                        date_pcv2 = date_pcv2,
+                                                                        date_pcv3 = date_pcv3,
+                                                                        date_ipv1 = date_ipv1,
+                                                                        date_ipv2 = date_ipv2,
+                                                                        date_mr1 = date_mr1,
+                                                                        date_mr2 = date_mr2,
+                        
+                                                                    )
+                                                                    
+                        v2 = VaccineCard2.objects.filter(to_user_id = id )
+                        for i in v2:
+                            if i.date_bcg1 and i.date_bcg2:
+                                i.bcg = 2
+                            if i.date_bcg1 and not i.date_bcg2:
+                                i.bcg = 1
+                            if i.date_bcg2 and not i.date_bcg1:
+                                i.bcg = 1
+                            if not i.date_bcg1 and not i.date_bcg2:
+                                i.bcg = 0
+
+                            if i.date_penta1 and i.date_penta2 and i.date_penta3:
+                                i.penta = 3
+                            if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                                i.penta = 0
+                            if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+                                i.penta = 2
+                            if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+                                i.penta = 2
+                            if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+                                i.penta = 2
+                            if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+                                i.penta = 1
+                            if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+                                i.penta = 1
+                            if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                                i.penta = 1
+
+                            if i.date_opv1 and i.date_opv2 and i.date_opv3:
+                                i.opv = 3
+                            if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                                i.opv = 0
+                            if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+                                i.opv = 2
+                            if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+                                i.opv = 2
+                            if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+                                i.opv = 2
+                            if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+                                i.opv = 1
+                            if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+                                i.opv = 1
+                            if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                                i.opv = 1
+
+                            if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+                                i.pcv = 3
+                            if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                                i.pcv = 0
+                            if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+                                i.pcv = 2
+                            if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+                                i.pcv = 2
+                            if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+                                i.pcv = 2
+                            if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+                                i.pcv = 1
+                            if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+                                i.pcv = 1
+                            if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                                i.pcv = 1
+
+                            if i.date_ipv1 and i.date_ipv2:
+                                i.ipv = 2
+                            if i.date_ipv1 and not i.date_ipv2:
+                                i.ipv = 1
+                            if i.date_ipv2 and not i.date_ipv1:
+                                i.ipv = 1
+                            if not i.date_ipv1 and not i.date_ipv2:
+                                i.ipv = 0
+
+                            if i.date_mr1 and i.date_mr2:
+                                i.mr = 2
+                            if i.date_mr1 and not i.date_mr2:
+                                i.mr = 1
+                            if i.date_mr2 and not i.date_mr1:
+                                i.mr = 1
+                            if not i.date_mr1 and not i.date_mr2:
+                                i.mr = 0
+                            i.save()
+                        try:
+                            data2 = VaccineCard2.objects.get(to_user_id = id)
+                        except:
+                            data2 = None
+                        
+                    # to create
+                    else:
+                        VaccineCard2.objects.create(
+                            by_user = request.user,
+                            to_user_id = id,
+                            date_bcg1 = date_bcg1,
+                            date_bcg2 = date_bcg2,
+                            date_penta1 = date_penta1,
+                            date_penta2 = date_penta2,
+                            date_penta3 = date_penta3,
+                            date_opv1 = date_opv1,
+                            date_opv2 = date_opv2,
+                            date_opv3 = date_opv3,
+                            date_pcv1 = date_pcv1,
+                            date_pcv2 = date_pcv2,
+                            date_pcv3 = date_pcv3,
+                            date_ipv1 = date_ipv1,
+                            date_ipv2 = date_ipv2,
+                            date_mr1 = date_mr1,
+                            date_mr2 = date_mr2,
+                        )
+
+                        v2 = VaccineCard2.objects.filter(to_user_id = id )
+                        for i in v2:
+                            if i.date_bcg1 and i.date_bcg2:
+                                i.bcg = 2
+                            if i.date_bcg1 and not i.date_bcg2:
+                                i.bcg = 1
+                            if i.date_bcg2 and not i.date_bcg1:
+                                i.bcg = 1
+                            if not i.date_bcg1 and not i.date_bcg2:
+                                i.bcg = 0
+
+                            if i.date_penta1 and i.date_penta2 and i.date_penta3:
+                                i.penta = 3
+                            if not i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                                i.penta = 0
+                            if i.date_penta1 and i.date_penta2 and not i.date_penta3:
+                                i.penta = 2
+                            if i.date_penta1 and not i.date_penta2 and  i.date_penta3:
+                                i.penta = 2
+                            if  i.date_penta2 and i.date_penta3 and not i.date_penta1:
+                                i.penta = 2
+                            if  i.date_penta2 and not i.date_penta3 and not i.date_penta1:
+                                i.penta = 1
+                            if  i.date_penta3 and not i.date_penta2 and not i.date_penta1:
+                                i.penta = 1
+                            if  i.date_penta1 and not i.date_penta2 and not i.date_penta3:
+                                i.penta = 1
+
+                            if i.date_opv1 and i.date_opv2 and i.date_opv3:
+                                i.opv = 3
+                            if not i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                                i.opv = 0
+                            if i.date_opv1 and i.date_opv2 and not i.date_opv3:
+                                i.opv = 2
+                            if i.date_opv1 and not i.date_opv2 and  i.date_opv3:
+                                i.opv = 2
+                            if  i.date_opv2 and i.date_opv3 and not i.date_opv1:
+                                i.opv = 2
+                            if  i.date_opv2 and not i.date_opv3 and not i.date_opv1:
+                                i.opv = 1
+                            if  i.date_opv3 and not i.date_opv2 and not i.date_opv1:
+                                i.opv = 1
+                            if  i.date_opv1 and not i.date_opv2 and not i.date_opv3:
+                                i.opv = 1
+
+                            if i.date_pcv1 and i.date_pcv2 and i.date_pcv3:
+                                i.pcv = 3
+                            if not i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                                i.pcv = 0
+                            if i.date_pcv1 and i.date_pcv2 and not i.date_pcv3:
+                                i.pcv = 2
+                            if i.date_pcv1 and not i.date_pcv2 and  i.date_pcv3:
+                                i.pcv = 2
+                            if  i.date_pcv2 and i.date_pcv3 and not i.date_pcv1:
+                                i.pcv = 2
+                            if  i.date_pcv2 and not i.date_pcv3 and not i.date_pcv1:
+                                i.pcv = 1
+                            if  i.date_pcv3 and not i.date_pcv2 and not i.date_pcv1:
+                                i.pcv = 1
+                            if  i.date_pcv1 and not i.date_pcv2 and not i.date_pcv3:
+                                i.pcv = 1
+
+                            if i.date_ipv1 and i.date_ipv2:
+                                i.ipv = 2
+                            if i.date_ipv1 and not i.date_ipv2:
+                                i.ipv = 1
+                            if i.date_ipv2 and not i.date_ipv1:
+                                i.ipv = 1
+                            if not i.date_ipv1 and not i.date_ipv2:
+                                i.ipv = 0
+
+                            if i.date_mr1 and i.date_mr2:
+                                i.mr = 2
+                            if i.date_mr1 and not i.date_mr2:
+                                i.mr = 1
+                            if i.date_mr2 and not i.date_mr1:
+                                i.mr = 1
+                            if not i.date_mr1 and not i.date_mr2:
+                                i.mr = 0
+                            i.save()
+                    
+                else:
+                    return HttpResponse('Not Allowed')
+                    
+        try:
+            data2 = VaccineCard2.objects.get(to_user_id = id)
+        except:
+            data2 = None
+            
+        context = {
+            'data2': data2,
+            'user': user,
+            'details': details,
+            'my_health_assistant': my_health_assistant,
+            'report_to': report_to,
+            'form': form,
+            'id': id,
+            'v2': v2,
+        }
+        return render(request,'user/baby_profile.html',context)
+    else:
+        return HttpResponse('Permission Denied')
 
 @login_required
 def heath_assistant_profile(request,id):
