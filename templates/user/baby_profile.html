@@ -43,7 +43,7 @@
     }
     /* Handle on hover */
     
-    ::-webkit-scrollbar-thumb:hover {
+     ::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
 </style>
@@ -208,6 +208,18 @@
                             <div class="col-sm-9 text-secondary">
                                 {{ i.word_no }}
                             </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Block</h6>
+                            </div>
+
+                            <div class="col-sm-9 text-secondary">
+                                {{ i.sub_block }}
+                            </div>
+
                         </div>
                         <hr> {% endfor %}
                         <div class="row">

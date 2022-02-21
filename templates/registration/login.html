@@ -237,7 +237,31 @@
                                     <label class="font-size-h6 font-weight-bolder text-dark pt-5">Your Password</label>
                                     <a href="{% url 'forgot_password_number' %}" class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5">Forgot Password ?</a>
                                 </div>
-                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" id="pass" autocomplete="off" />
+
+                                <style>
+                                    .pass-eye {
+                                        position: relative;
+                                    }
+                                    
+                                    .pass-eye i {
+                                        position: absolute;
+                                        top: 40%;
+                                        right: 10px;
+                                        color: red;
+                                        cursor: pointer;
+                                        transition: 0.3s ease-in-out;
+                                    }
+                                    
+                                    .pass-eye i:hover {
+                                        box-shadow: 0px 0px 5px red;
+                                        font-stretch: expanded;
+                                    }
+                                </style>
+
+                                <div class="pass-eye">
+                                    <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" id="pass" autocomplete="off" />
+                                    <i class="fa fa-eye" aria-hidden="true" id="eye"></i>
+                                </div>
                             </div>
                             <!--end::Form group-->
                             <!--begin::Action-->
@@ -332,7 +356,7 @@
     <script src="{% static 'assets/js/pages/custom/login/login-3.js' %}"></script>
     <!--end::Page Scripts-->
 
-
+    <!-- login -->
     <script>
         $("#loginForm").submit(function(event) {
             event.preventDefault();
@@ -389,6 +413,17 @@
                 })
             }
         });
+    </script>
+
+    <!-- show pass -->
+    <script>
+        $('#eye').click(function(e) {
+            if ($('#pass').attr("type") === 'text') {
+                $('#pass').prop('type', 'password');
+            } else {
+                $('#pass').prop('type', 'text');
+            }
+        })
     </script>
 
 </body>

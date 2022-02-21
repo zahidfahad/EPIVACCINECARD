@@ -19,6 +19,7 @@ from .decorators import has_perm_baby, user_passes_test, has_perm_admin_ha,has_p
                         has_perm_ha,forbidden,REDIRECT_FIELD_NAME
 from datetime import datetime
 from django.contrib.auth.forms import SetPasswordForm
+from django.db.models import Sum
 
 
 
@@ -195,7 +196,7 @@ def admin_profile(request,id):
 
 @login_required
 def baby_profile(request,id):
-    if request.user.id == id or request.user.is_ha or request.user.is_baby:
+    if request.user.id == id or request.user.is_ha or request.user.is_superuser:
         data = None
         user = User.objects.filter(id = id, is_baby = True)
         details = User.objects.get(id = id, is_baby = True)
@@ -678,12 +679,38 @@ def heath_assistant_profile(request,id):
             i.mr = 0
         i.save()
 
+    v2 = VaccineCard2.objects.filter(by_user_id = id )
+    bcg = v2.aggregate(Sum('bcg'))
+    for k,v in bcg.items():
+        bcg = v
+    penta = v2.aggregate(Sum('penta'))
+    for k,v in penta.items():
+        penta = v
+    opv = v2.aggregate(Sum('opv'))
+    for k,v in opv.items():
+        opv = v
+    pcv = v2.aggregate(Sum('pcv'))
+    for k,v in pcv.items():
+        pcv = v
+    ipv = v2.aggregate(Sum('ipv'))
+    for k,v in ipv.items():
+        ipv = v
+    mr = v2.aggregate(Sum('mr'))
+    for k,v in mr.items():
+        mr = v
+
     context = {
         'user': user,
         'my_area_users': my_area_users,
         'reports': reports,
         'id': id,
         'v2': v2,
+        'bcg': bcg,
+        'penta': penta,
+        'pcv': pcv,
+        'opv': opv,
+        'ipv': ipv,
+        'mr': mr,
     }
     return render(request,'user/ha_profile.html',context)
 
