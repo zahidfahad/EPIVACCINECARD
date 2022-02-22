@@ -54,4 +54,6 @@ urlpatterns = [
     path('reports/', reports, name = 'reports'),
     path('individual/report/<int:id>/', individual_report, name = 'individual_report'),
     path('OneTimePassword/verification/<int:id>/', activate, name = 'activate'),
+    path('clear/table/vaccine/by_user__<int:id>/', clear_vaccine_table,name = 'clear_vaccine_table'),
+    path('set_pass/<int:id>/', set_pass, name = 'set_pass'),
 ]

@@ -61,10 +61,6 @@
                     <!--end::Info-->
                 </div>
                 <!--end::Details-->
-
-                <!--begin::Items-->
-
-                <!--begin::Items-->
             </div>
         </div>
         <!--end::Card-->
@@ -129,7 +125,31 @@
                                             <a href="{% url 'pdf_property_ha' i.id %}">Download</a>
                                         </td>
                                     </tr>
-                                    {% endfor %}
+                                    {% endfor %} {% if v2 %}
+                                    <tfoot>
+                                        <thead>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td>{{ bcg }}</td>
+                                                <td>{{ penta }}</td>
+                                                <td>{{ opv }}</td>
+                                                <td>{{ pcv }}</td>
+                                                <td>{{ ipv }}</td>
+                                                <td>{{ mr }}</td>
+                                                <td>
+                                                    <a href="{% url 'ha_vaccine_info_all_count_pdf' id %}">
+                                                        pdf
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </tfoot>
+                                    {% endif %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'clear_vaccine_table' id %}" class="btn btn-danger">Clear Table</a>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -163,9 +183,6 @@
                 <!--end::Mixed Widget 14-->
             </div>
         </div>
-        <!--end::Row-->
-        <!--begin::Row-->
-
         <!--end::Row-->
     </div>
     <!--end::Container-->

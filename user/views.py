@@ -917,4 +917,20 @@ def reset_pass(request,username):
             else:
                 return HttpResponse('Two password fields did not match')
     return render(request,'user/password_reset.html')
+
+
+def clear_vaccine_table(request, id):
+    if request.user.id == id or request.user.is_superuser:
+        v2 = VaccineCard2.objects.filter(by_user_id = id ).delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Permission Denied')
+
+def set_pass(request, id):
+    u = User.objects.get(id = id)
+    if request.method == 'POST':
+        password = request.POST.get('pass')
+        u.set_password(password)
+        u.save()
+    return render(request, 'user/set_password.html', {'user': u,'id': id})
         
