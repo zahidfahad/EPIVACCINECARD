@@ -23,7 +23,7 @@ class UserCreation(UserCreationForm):
             'union': forms.TextInput(attrs={'class': 'form-control'}),
             'word_no': forms.Select(attrs={'class': 'form-control','required': True}),
             'holdingNo': forms.TextInput(attrs={'class': 'form-control'}),
-            'sub_block': forms.TextInput(attrs={'class': 'form-control','placeholder': 'A-1'}),
+            'sub_block': forms.Select(attrs={'class': 'form-control','placeholder': 'A-1'}),
             'get_vaccine_from': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
@@ -50,7 +50,7 @@ class HACreation(UserCreationForm):
             'union': forms.TextInput(attrs={'class': 'form-control'}),
             'word_no': forms.Select(attrs={'class': 'form-control','required': True}),
             'holdingNo': forms.TextInput(attrs={'class': 'form-control'}),
-            'sub_block': forms.TextInput(attrs={'class': 'form-control'}),
+            'sub_block': forms.Select(attrs={'class': 'form-control'}),
             'get_vaccine_from': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
@@ -78,7 +78,7 @@ class EditProfile(forms.ModelForm):
             'union': forms.TextInput(attrs={'class': 'form-control'}),
             'word_no': forms.Select(attrs={'class': 'form-control'}),
             'holdingNo': forms.TextInput(attrs={'class': 'form-control'}),
-            'sub_block': forms.TextInput(attrs={'class': 'form-control'}),
+            'sub_block': forms.Select(attrs={'class': 'form-control'}),
             'get_vaccine_from': forms.TextInput(attrs={'class': 'form-control'}),
             'blood_group': forms.Select(attrs={'class': 'form-control'}), 
             'email': forms.EmailInput(attrs={'class': 'form-control'}), 

@@ -69,6 +69,17 @@ class User(AbstractUser):
         ('O-','O-'),
     ]
 
+    SUB_BLOCK_CHOICES = [
+        ('A-1', 'A-1'),
+        ('A-2', 'A-2'),
+        ('B-1', 'B-1'),
+        ('B-2', 'B-2'),
+        ('C-1', 'C-1'),
+        ('C-2', 'C-2'),
+        ('D-1', 'D-1'),
+        ('D-2', 'D-2')
+    ]
+
     birthcertificateNo = models.CharField(max_length=1000,blank=True, null=True)
     fatherName = models.CharField(max_length =1000,blank=True, null=True)
     motherName = models.CharField(max_length =1000,blank=True, null=True)
@@ -80,7 +91,7 @@ class User(AbstractUser):
     union = models.CharField(max_length =1000,blank=True, null=True)
     word_no = models.CharField(max_length =1000,blank=True, null=True,choices=WORD_NO)
     holdingNo = models.CharField(max_length =1000,blank=True, null=True)
-    sub_block = models.CharField(max_length =1000,blank=True, null=True)
+    sub_block = models.CharField(max_length =1000,blank=True, null=True,choices=SUB_BLOCK_CHOICES)
     get_vaccine_from = models.CharField(max_length = 1000,blank=True, null=True)
     profile_pic = models.ImageField(upload_to = 'Profile Pictures',blank=True, null=True)
     blood_group = models.CharField(max_length=1000,blank=True, null=True,choices=BLOD_GROUP)

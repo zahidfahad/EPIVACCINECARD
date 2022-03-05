@@ -92,25 +92,21 @@ def register(request):
         form = UserCreation(request.POST,request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
-            block = user.sub_block
-            if '-' in block:
-                user.is_baby = True
-                user.registrationNo = unique_registrationNo()
-                user.is_active = False
-                otp = OTP()
-                user.otp = otp
-                try:
-                    client.messages.create(
-                                        body = f"Hello { user.first_name }. Yout OTP is { otp }",
-                                        from_ = '+12397471656',
-                                        to = user.username,
-                                    )
-                    user.save()
-                    return redirect('activate', id = user.id)
-                except:
-                    return HttpResponse('error sending message. please enter a valid phone number')
-            else:
-                return HttpResponse('Your Sub block is missing this "-"')
+            user.is_baby = True
+            user.registrationNo = unique_registrationNo()
+            user.is_active = False
+            otp = OTP()
+            user.otp = otp
+            try:
+                client.messages.create(
+                                    body = f"Hello { user.first_name }. Yout OTP is { otp }",
+                                    from_ = '+12397471656',
+                                    to = user.username,
+                                )
+                user.save()
+                return redirect('activate', id = user.id)
+            except:
+                return HttpResponse('error sending message. please enter a valid phone number')
     context = {
         'form': form,
     }
@@ -123,25 +119,21 @@ def ha_register(request):
         form = HACreation(request.POST,request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
-            block = user.sub_block
-            if '-' in block:
-                user.is_ha = True
-                user.registrationNo = unique_registrationNo()
-                user.is_active = False
-                otp = OTP()
-                user.otp = otp
-                try:
-                    client.messages.create(
-                                        body = f"Hello { user.first_name }. Yout OTP is { otp }",
-                                        from_ = '+12397471656',
-                                        to = user.username,
-                                    )
-                    user.save()
-                    return redirect('activate', id = user.id)
-                except:
-                    return HttpResponse('error sending message. please enter a valid phone number')
-            else:
-                return HttpResponse('Your Sub block is missing this "-"')
+            user.is_ha = True
+            user.registrationNo = unique_registrationNo()
+            user.is_active = False
+            otp = OTP()
+            user.otp = otp
+            try:
+                client.messages.create(
+                                    body = f"Hello { user.first_name }. Yout OTP is { otp }",
+                                    from_ = '+12397471656',
+                                    to = user.username,
+                                )
+                user.save()
+                return redirect('activate', id = user.id)
+            except:
+                return HttpResponse('error sending message. please enter a valid phone number')
     context = {
         'form': form,
     }
@@ -598,6 +590,30 @@ def heath_assistant_profile(request,id):
     my_area_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
                                                         baby__zilla = details.zilla,baby__word_no = details.word_no)
 
+    a1_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'A-1')
+
+    a2_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'A-2')
+
+    b1_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'B-1')
+
+    b2_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'B-2')
+
+    c1_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'C-1')
+
+    c2_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'C-2')
+
+    d1_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'D-1')
+
+    d2_users = BabyAttachedToHealthAssistant.objects.filter(ha_id = id, baby__divisions = details.divisions,
+                                                        baby__zilla = details.zilla,baby__word_no = details.word_no, baby__sub_block = 'D-2')
+
     v2 = VaccineCard2.objects.filter(by_user_id = id )
     for i in v2:
         if i.date_bcg1 and i.date_bcg2:
@@ -711,6 +727,14 @@ def heath_assistant_profile(request,id):
         'opv': opv,
         'ipv': ipv,
         'mr': mr,
+        'a1_users': a1_users,
+        'a2_users': a2_users,
+        'b1_users': b1_users,
+        'b2_users': b2_users,
+        'c1_users': c1_users,
+        'c2_users': c2_users,
+        'd1_users': d1_users,
+        'd2_users': d2_users,
     }
     return render(request,'user/ha_profile.html',context)
 

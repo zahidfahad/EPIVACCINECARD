@@ -169,13 +169,112 @@
                     <!--begin::Body-->
                     <div class="card-body d-flex flex-column">
                         <div class="flex-grow-1" style="height: 350px; overflow-y: scroll;">
-                            {% for i in my_area_users %}
+
+
+
+                            <h3 class="text-danger font-weight-bold">A-1</h3>
+                            {% if not a1_users %} No User
+                            <hr> {% endif %} {% for i in a1_users %}
+
                             <a href="{% url 'visit_profile' i.baby.id %}">
                                 <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
-                                    {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
                             </a>
+
                             <hr>
                             <br> {% endfor %}
+
+
+                            <hr>
+                            <h3 class="text-danger font-weight-bold">A-2</h3>
+                            {% if not a2_users %} No User
+                            <hr>{% endif %} {% for i in a2_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+                            <h3 class="text-danger font-weight-bold">B-1</h3>
+                            {% if not b1_users %} No User
+                            <hr> {% endif %} {% for i in b1_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+                            <h3 class="text-danger font-weight-bold">B-2</h3>
+                            {% if not b2_users %} No User
+                            <hr> {% endif %} {% for i in b2_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+                            <h3 class="text-danger font-weight-bold">C-1</h3>
+                            {% if not c1_users %} No User
+                            <hr> {% endif %} {% for i in c1_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+                            <h3 class="text-danger font-weight-bold">C-2</h3>
+                            {% if not c2_users %} No User
+                            <hr> {% endif %} {% for i in c2_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+                            <h3 class="text-danger font-weight-bold">D-1</h3>
+                            {% if not d1_users %} No User
+                            <hr> {% endif %} {% for i in d1_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+                            <h3 class="text-danger font-weight-bold">D-2</h3>
+                            {% if not d2_users %} No User
+                            <hr> {% endif %} {% for i in d2_users %}
+
+                            <a href="{% url 'visit_profile' i.baby.id %}">
+                                <u style="color: rgb(78, 87, 90); font-size: 15px;">{{ i.baby.first_name|title }} 
+                                        {{ i.baby.last_name|title }} </u> <br>{{ i.baby.gender }}, {{ i.baby.registrationNo }}
+                            </a>
+
+                            <hr>
+                            <br> {% endfor %}
+
+
+
+
+
+
                         </div>
                     </div>
                     <!--end::Body-->
