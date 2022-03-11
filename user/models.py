@@ -101,8 +101,6 @@ class User(AbstractUser):
 
     baby_attached = models.BooleanField(default=False)
 
-    otp = models.BigIntegerField(blank=True, null=True,unique=True)
-
     def __str__(self):
         if not self.first_name or not self.last_name:
             return self.username

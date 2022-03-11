@@ -223,11 +223,16 @@
 
                             <!--begin::Form group-->
                             <div class="form-group">
+                                {% if messages %} {% for message in messages %}
+                                <h6 class="text-info django-msg">
+                                    {{ message }}
+                                </h6>
+                                {% endfor %} {% endif %}
                                 <div class="cred-msg">
 
                                 </div>
                                 <label class="font-size-h6 font-weight-bolder text-dark">Your Mobile Number</label>
-                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="text" name="username" id="username" value="+88" autocomplete="off" />
+                                <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="text" name="username" id="username" autocomplete="off" />
                             </div>
                             <!--end::Form group-->
 
@@ -424,6 +429,12 @@
                 $('#pass').prop('type', 'text');
             }
         })
+    </script>
+
+    <script>
+        setTimeout(function() {
+            $('.django-msg').remove();
+        }, 5000);
     </script>
 
 </body>

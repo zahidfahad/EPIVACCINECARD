@@ -12,6 +12,7 @@ urlpatterns = [
     path('register/', register, name= 'register'),
     path('superuser/profile/<int:id>/', admin_profile, name = 'admin_profile'),
     path('health_assistant/register/', ha_register, name = 'ha_register'),
+    path('activate/<uidb64>/<token>/', activate_email_verification, name='activate_email_verification'),
     path('health_assistant/profile/<int:id>/', heath_assistant_profile, name = 'heath_assistant_profile'),
     path('baby/profile/<int:id>/', baby_profile, name = 'baby_profile'),
     path('visiting/profile/<int:id>/', visit_profile, name = 'visit_profile'),
@@ -39,10 +40,10 @@ urlpatterns = [
     #      name="password_reset_done"),
 
     # # not responsive template
-    path('reset/<uidb64>/<token>/',
-         auth_views.PasswordResetConfirmView.as_view(
-             template_name="accounts/password_reset_form.html"),
-         name="password_reset_confirm"),
+    # path('reset/<uidb64>/<token>/',
+    #      auth_views.PasswordResetConfirmView.as_view(
+    #          template_name="accounts/password_reset_form.html"),
+    #      name="password_reset_confirm"),
 
     # path('reset/done/',
     #      auth_views.PasswordResetCompleteView.as_view(

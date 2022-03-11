@@ -20,6 +20,16 @@ from .decorators import has_perm_baby, user_passes_test, has_perm_admin_ha,has_p
 from datetime import datetime
 from django.contrib.auth.forms import SetPasswordForm
 from django.db.models import Sum
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from .tokens import account_activation_token
+from django.core.mail import send_mail
+from epivaccinecard.settings import EMAIL_HOST_USER
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_text
+from django.contrib.auth import get_user_model
 
 
 
@@ -50,6 +60,7 @@ def activate(request,id):
         if int(otp) == user.otp:
             user.is_active = True
             user.save()
+            messages.success(request,"Please Login to continue.")
             return redirect('login')
         else:
             return HttpResponse('Wrong OTP')
@@ -86,6 +97,8 @@ def login_view(request):
         return JsonResponse(response,safe=False)
     return render(request,'registration/login.html')
 
+
+# updated
 def register(request):
     form = UserCreation()
     if request.method == 'POST':
@@ -95,24 +108,24 @@ def register(request):
             user.is_baby = True
             user.registrationNo = unique_registrationNo()
             user.is_active = False
-            otp = OTP()
-            user.otp = otp
-            try:
-                client.messages.create(
-                                    body = f"Hello { user.first_name }. Yout OTP is { otp }",
-                                    from_ = '+12397471656',
-                                    to = user.username,
-                                )
-                user.save()
-                return redirect('activate', id = user.id)
-            except:
-                return HttpResponse('error sending message. please enter a valid phone number')
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Verify Your Email.'
+            message = render_to_string('user/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            send_mail(mail_subject, message, EMAIL_HOST_USER, [to_email])
+            return render(request, 'user/wait_for_verification.html')
     context = {
         'form': form,
     }
     return render(request,'registration/register.html',context)
 
-
+# updated
 def ha_register(request):
     form = HACreation()
     if request.method == 'POST':
@@ -122,23 +135,38 @@ def ha_register(request):
             user.is_ha = True
             user.registrationNo = unique_registrationNo()
             user.is_active = False
-            otp = OTP()
-            user.otp = otp
-            try:
-                client.messages.create(
-                                    body = f"Hello { user.first_name }. Yout OTP is { otp }",
-                                    from_ = '+12397471656',
-                                    to = user.username,
-                                )
-                user.save()
-                return redirect('activate', id = user.id)
-            except:
-                return HttpResponse('error sending message. please enter a valid phone number')
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Verify Your Email.'
+            message = render_to_string('user/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            send_mail(mail_subject, message, EMAIL_HOST_USER, [to_email])
+            return render(request, 'user/wait_for_verification.html')
     context = {
         'form': form,
     }
     return render(request,'registration/ha_register.html',context)
 
+# newly added
+def activate_email_verification(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "Please Login to continue")
+        return redirect('login_view')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 @login_required
 def visit_profile(request,id):
