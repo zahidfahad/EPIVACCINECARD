@@ -64,6 +64,11 @@
             </div>
         </div>
         <!--end::Card-->
+
+
+
+        {% if not request.user.is_baby %}
+
         <!--begin::Row-->
         <div class="row">
             <div class="col-lg-8">
@@ -283,6 +288,11 @@
             </div>
         </div>
         <!--end::Row-->
+
+        {% endif %}
+
+
+
     </div>
     <!--end::Container-->
 </div>
